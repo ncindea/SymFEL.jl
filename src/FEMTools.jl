@@ -1,3 +1,4 @@
+__precompile__()
 # Copyright 2017 Nicolae Cindea
 # See accompanying license file.
 module FEMTools
