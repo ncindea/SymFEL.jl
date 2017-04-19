@@ -15,10 +15,10 @@ function get_lagrange_basis(n = 1, varcoeff = false)
   basis = []
   # p is a polynomial of degree n
   p = 0
+
   for i = 1:n+1
     p = p + L[i]*x^(i-1)
   end
-
   points = []
   for i = 0:n
     push!(points, i * h / n)

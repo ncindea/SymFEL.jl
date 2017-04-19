@@ -66,7 +66,4 @@ MHVC = SymPy.subs(MHVC, FEMTools.xa, 0)
 MHVC = SymPy.subs(MHVC, FEMTools.xb, FEMTools.h)
 @test MHVC == MH_hc
 
-# Testing get_em() function
-println("# Testing get_em() function")
-FEMTools.get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
-println("All tests passed!")
+println("All tests passed.")
