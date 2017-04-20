@@ -66,4 +66,53 @@ MHVC = SymPy.subs(MHVC, FEMTools.xa, 0)
 MHVC = SymPy.subs(MHVC, FEMTools.xb, FEMTools.h)
 @test MHVC == MH_hc
 
+try
+  FEMTools.get_hermite_basis(2)
+catch y
+  println(y)
+end
+
+##
+t = linspace(0, 1, 11)'
+ti = linspace(0, 1, 101)'
+x = sin(pi * t)
+y = pi * cos(pi * t)
+fdf = [x; y]
+f = FEMTools.interpolate(fdf, t, ti)
+@test norm(f[1:10:101]' - x) <= 1e-15
+
+## Testing get_em() function.
+println("Testing get_em() function.")
+@test FEMTools.get_em(1, 1, 0, 0) == FEMTools.get_lagange_em(1, 0, 0)
+@test FEMTools.get_em(3, 3, 1, 0; fe1 = "Hermite", fe2 = "Hermite") == FEMTools.get_hermite_em(3, 1, 0)
+try
+  FEMTools.get_em(1, 1, 0, 0; fe1 = "a", fe2 = "Lagrange")
+catch y
+  println(y)
+end
+
+try
+  FEMTools.get_em(1, 1, 2, 0)
+catch y
+  println(y)
+end
+
+try
+  FEMTools.get_em(1, 1, 1, 2)
+catch y
+  println(y)
+end
+
+try
+  FEMTools.get_em(3, 3, 3, 0; fe1 = "Hermite", fe2="Hermite")
+catch y
+  println(y)
+end
+
+try
+  FEMTools.get_em(3, 3, 2, -1; fe1 = "Hermite", fe2="Hermite")
+catch y
+  println(y)
+end
+##
 println("All tests passed.")

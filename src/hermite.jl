@@ -107,8 +107,8 @@ end
     * ti::Vector{Float64}: values in which fd is interpolated.
 "
 function interpolate(fd, t, ti)
-  p = length(fd) # 2*p -1 is the degree of polynomials
-  n = length(fd[1]) # number of samples
+  p = size(fd, 1) # 2*p -1 is the degree of polynomials
+  n = size(fd, 2) # number of samples
   if (n != length(t))
     error("The number of columns in the Matrix fd should be egal to the number of elements in the Vector t.")
   end
@@ -116,11 +116,11 @@ function interpolate(fd, t, ti)
         abs(t[1]-ti[1])>1e-12 || abs(t[end] - ti[end]) > 1e-12)
     error("Vectors t and ti should be uniform partitions of [a,b] interval.")
   end
-  F = getBasis(2*p - 1)
+  F = get_hermite_basis(2*p - 1)
   DT = t[2] - t[1];
   FDT = []
   for i = 1:2*p
-    push!(FDT, subs(F[i], Hermite.h, DT))
+    push!(FDT, SymPy.subs(F[i], h, DT))
   end
   ni = length(ti)
   fi = collect(zeros(ni , 1))
@@ -130,8 +130,8 @@ function interpolate(fd, t, ti)
     xx = ti[i] - t[j]
     S = 0;
     for l = 1:p
-      S = S + fd[l][j] * subs(FDT[l], Hermite.x, xx)
-      S = S + fd[l][j + 1] * subs(FDT[l+p], Hermite.x, xx)
+      S = S + fd[l, j] * SymPy.subs(FDT[l], x, xx)
+      S = S + fd[l, j + 1] * SymPy.subs(FDT[l+p], x, xx)
     end
     fi[i] = S
     if (isnan(S))
@@ -139,6 +139,6 @@ function interpolate(fd, t, ti)
     end
 
   end
-  fi[ni] = fd[1][n]
+  fi[ni] = fd[1, n]
   fi
 end
