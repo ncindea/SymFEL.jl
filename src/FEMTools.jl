@@ -12,10 +12,12 @@ h = symbols("h")
 
 include("lagrange.jl")
 include("hermite.jl")
+include("assemble1d.jl")
 
 """
   get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
-  Gives an elementary matrices for different elements in each dimension.
+
+Gives an elementary matrices for different elements in each dimension.
 """
 function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
   if fe1 == "Lagrange"

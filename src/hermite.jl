@@ -1,7 +1,8 @@
-"
+"""
     get_hermite_basis(n = 3, varcoeff = false)
-    Get Hermite basis function of order n.
-"
+
+Get Hermite basis function of order n.
+"""
 function get_hermite_basis(n = 3, varcoeff = false)
   if (n < 3) || (n % 2 != 1)
     error("The degree of Hermite polynomials should be odd and >= 3")
@@ -56,15 +57,16 @@ function get_hermite_basis(n = 3, varcoeff = false)
 end
 
 
-"
+"""
     get_hermite_em(p = 3, m = 0, n = 0)
-    Get Hermite finite elements elementary matrices.
 
-    # Arguments
-    * p: degree of polynomials in the basis.
-    * m: number of derivatives on the first function.
-    * n: number of derivatives on the second function.
-"
+Get Hermite finite elements elementary matrices.
+
+# Arguments
+  * `p`: degree of polynomials in the basis.
+  * `m`: number of derivatives on the first function.
+  * `n`: number of derivatives on the second function.
+"""
 function get_hermite_em(p = 3, m = 0, n = 0)
   M = Array{SymPy.Sym}(p+1, p+1)
   F = get_hermite_basis(p)
@@ -76,16 +78,16 @@ function get_hermite_em(p = 3, m = 0, n = 0)
   M
 end
 
-"
+"""
     get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
     Get Hermite finite elements elementary matrices for variable coefficients.
 
-    # Arguments
-    * p: degree of polynomials in the basis.
-    * m: number of derivatives on the first function.
-    * n: number of derivatives on the second function.
-    * f: the variable coefficient.
-"
+# Arguments
+  * p: degree of polynomials in the basis.
+  * m: number of derivatives on the first function.
+  * n: number of derivatives on the second function.
+  * f: the variable coefficient.
+"""
 function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
   M = Array{SymPy.Sym}(p+1, p+1)
   F = get_hermite_basis(p, true)
@@ -97,15 +99,16 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
   M
 end
 
-"
+"""
     interpolate(fd::Matrix{Float64}, t::Vector{Float64}, ti::Vector{Float64})
-    Interpolate fd from t to ti.
 
-    # Arguments:
-    * fd::Matrix{Float64}: values and derivatives of function to interpolate.
-    * t::Vector{Float64}: values in which fd id known
-    * ti::Vector{Float64}: values in which fd is interpolated.
-"
+Interpolate fd from t to ti.
+
+# Arguments:
+  * fd::Matrix{Float64}: values and derivatives of function to interpolate.
+  * t::Vector{Float64}: values in which fd id known
+  * ti::Vector{Float64}: values in which fd is interpolated.
+"""
 function interpolate(fd, t, ti)
   p = size(fd, 1) # 2*p -1 is the degree of polynomials
   n = size(fd, 2) # number of samples
