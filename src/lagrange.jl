@@ -51,9 +51,9 @@ end
 Get Lagrange finite elements elementary matrices.
 
 # Arguments
-  * p: degree of polynomials in the basis.
-  * m: number of derivatives on the first function.
-  * n: number of derivatives on the second function.
+  * `p`: degree of polynomials in the basis.
+  * `m`: number of derivatives on the first function.
+  * `n`: number of derivatives on the second function.
 """
 function get_lagange_em(p = 1, m = 0, n = 0)
   M = Array{SymPy.Sym}(p+1, p+1)
@@ -66,16 +66,16 @@ function get_lagange_em(p = 1, m = 0, n = 0)
   M
 end
 
-"
+"""
     get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
     Get Hermite finite elements elementary matrices for variable coefficients.
 
-    # Arguments
-    * p: degree of polynomials in the basis.
-    * m: number of derivatives on the first function.
-    * n: number of derivatives on the second function.
-    * f: the variable coefficient.
-"
+# Arguments
+  * `p`: degree of polynomials in the basis.
+  * `m`: number of derivatives on the first function.
+  * `n`: number of derivatives on the second function.
+  * `f`: the variable coefficient.
+"""
 function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
   M = Array{SymPy.Sym}(p+1, p+1)
   F = get_lagrange_basis(p, true)
