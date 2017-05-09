@@ -2,7 +2,7 @@
 
 This package contains several functions usefull for the implementation
 of the finite elements method (FEM). More preciselly, the package
-``SymPy`` is used
+`SymPy` is used
 in order to compute exactly the elementary finite element functions for both
 Lagrange and Hermite finite elements.
 
