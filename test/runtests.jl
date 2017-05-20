@@ -114,5 +114,43 @@ try
 catch y
   println(y)
 end
+
 ##
+n = 1001
+x = linspace(0, 1, 2 * n - 1).^2
+dx = 1 / (n - 1)
+
+elem_M = FEMTools.get_lagange_em(2, 0, 0)
+elem_M = SymPy.subs(elem_M, FEMTools.h, dx)
+elem_M = convert(Matrix{Float64}, elem_M)
+M = FEMTools.assemble_1d_FE_matrix(elem_M, n, intNodes = 1, dof1 = 1, dof2 = 1)
+@test abs(convert(Float64, (x' * M * x)[1]) - 1 / 5) < 1e-15
+
+elem_M_p1 = FEMTools.get_lagange_em(1, 0, 0)
+elem_M_p1 = SymPy.subs(elem_M_p1, FEMTools.h, dx)
+elem_M_p1 = convert(Matrix{Float64}, elem_M_p1)
+M_p1 = FEMTools.assemble_1d_FE_matrix(elem_M_p1, n)
+x = linspace(0, 1, n).^2
+@test abs(convert(Float64, (x' * M_p1 * x)[1]) - 1 / 5) < 1e-6
+
+elem_M_h3 = FEMTools.get_hermite_em(3, 0, 0)
+elem_M_h3 = SymPy.subs(elem_M_h3, FEMTools.h, dx)
+elem_M_h3 = convert(Matrix{Float64}, elem_M_h3)
+M_h3 = FEMTools.assemble_1d_FE_matrix(elem_M_h3, n, intNodes = 0, dof1 = 2, dof2 = 2)
+x = zeros(2 * n, 1)
+x[2*(0:(n-1)) + 1] = linspace(0, 1, n).^3
+x[2*(0:(n-1)) + 2] = 3 * linspace(0, 1, n).^2
+@test abs(convert(Float64, (x' * M_h3 * x)[1]) - 1 / 7) < 1e-15
+
+nodes = convert(Array{Float64, 1}, linspace(0, 1, n))
+elem_M_p1 = FEMTools.get_lagange_em(1, 0, 0)
+M_p1_nu = FEMTools.assemble_1d_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
+A = M_p1 - M_p1_nu
+@test norm(A[:]) < 1e-15
+##
+
+nodes = [linspace(0, 0.99, 100); linspace(0.99, 1, 101)]
+M_p1_nu2 = FEMTools.assemble_1d_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
+x = nodes.^2
+@test abs((x' * M_p1_nu2 * x)[1] - 1 / 5) < 1e-4
 println("All tests passed.")
