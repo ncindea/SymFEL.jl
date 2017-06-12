@@ -82,6 +82,7 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
   for i = 1:p+1
     for j = 1:p+1
       M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n) * f, (x, xa, xb)))
+      M[i, j] = simplify(subs(M[i, j], h, xb - xa))
     end
   end
   M

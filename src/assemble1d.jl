@@ -40,7 +40,7 @@ function assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
 end
 
 """
-    assemble_1d_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
+    assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
       intNodes = 0, dof1 = 1, dof2 = 1)
 
 Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform mesh.
@@ -52,7 +52,7 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
   * `dof1`     : number of degrees of freedom for each node for lhs
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
-function assemble_1d_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
+function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
     intNodes = 0, dof1 = 1, dof2 = 1)
   nbNodes = length(nodes)
   nbNodesTotal = (nbNodes + (nbNodes - 1) * intNodes)
