@@ -45,5 +45,11 @@ FEMTools.interpolate(fd, t, ti)
 ## Assembling functions
 
 ```@docs
-FEMTools.assemble_1d_FE_matrix(elem, nbNodes)
+FEMTools.assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
+    intNodes = 0, dof1 = 1, dof2 = 1)
+```
+
+```@docs
+FEMTools.assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
+    intNodes = 0, dof1 = 1, dof2 = 1)
 ```

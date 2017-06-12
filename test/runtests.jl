@@ -144,13 +144,13 @@ x[2*(0:(n-1)) + 2] = 3 * linspace(0, 1, n).^2
 
 nodes = convert(Array{Float64, 1}, linspace(0, 1, n))
 elem_M_p1 = FEMTools.get_lagange_em(1, 0, 0)
-M_p1_nu = FEMTools.assemble_1d_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
+M_p1_nu = FEMTools.assemble_1d_nu_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
 A = M_p1 - M_p1_nu
 @test norm(A[:]) < 1e-15
 ##
 
 nodes = [linspace(0, 0.99, 100); linspace(0.99, 1, 101)]
-M_p1_nu2 = FEMTools.assemble_1d_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
+M_p1_nu2 = FEMTools.assemble_1d_nu_FE_matrix(elem_M_p1, nodes; intNodes = 0, dof1 = 1, dof2 = 1)
 x = nodes.^2
 @test abs((x' * M_p1_nu2 * x)[1] - 1 / 5) < 1e-4
 println("All tests passed.")

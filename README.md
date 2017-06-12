@@ -16,7 +16,7 @@ get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
 Gives an elementary matrices for different elements in each dimension.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/FEMTools.jl#L17-L21' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/FEMTools.jl#L17-L21' class='documenter-source'>source</a><br>
 
 
 <a id='Lagrange-finite-elements-1'></a>
@@ -35,7 +35,7 @@ get_lagrange_basis(n = 1, varcoeff = false)
 Get Lagrange basis function of order `n`.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/lagrange.jl#L1-L5' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/lagrange.jl#L1-L5' class='documenter-source'>source</a><br>
 
 <a id='FEMTools.get_lagange_em' href='#FEMTools.get_lagange_em'>#</a>
 **`FEMTools.get_lagange_em`** &mdash; *Function*.
@@ -55,7 +55,7 @@ Get Lagrange finite elements elementary matrices.
   * `n`: number of derivatives on the second function.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/lagrange.jl#L48-L57' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/lagrange.jl#L48-L57' class='documenter-source'>source</a><br>
 
 <a id='FEMTools.get_lagrange_em_varcoeff' href='#FEMTools.get_lagrange_em_varcoeff'>#</a>
 **`FEMTools.get_lagrange_em_varcoeff`** &mdash; *Function*.
@@ -75,7 +75,7 @@ Get Hermite finite elements elementary matrices for variable coefficients.
   * `f`: the variable coefficient.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/lagrange.jl#L69-L78' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/lagrange.jl#L69-L78' class='documenter-source'>source</a><br>
 
 
 <a id='Hermite-finite-elements-1'></a>
@@ -94,7 +94,7 @@ get_hermite_basis(n = 3, varcoeff = false)
 Get Hermite basis function of order `n`.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/hermite.jl#L1-L5' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/hermite.jl#L1-L5' class='documenter-source'>source</a><br>
 
 <a id='FEMTools.get_hermite_em' href='#FEMTools.get_hermite_em'>#</a>
 **`FEMTools.get_hermite_em`** &mdash; *Function*.
@@ -114,7 +114,7 @@ Get Hermite finite elements elementary matrices.
   * `n`: number of derivatives on the second function.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/hermite.jl#L60-L69' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/hermite.jl#L60-L69' class='documenter-source'>source</a><br>
 
 <a id='FEMTools.get_hermite_em_varcoeff' href='#FEMTools.get_hermite_em_varcoeff'>#</a>
 **`FEMTools.get_hermite_em_varcoeff`** &mdash; *Function*.
@@ -134,7 +134,7 @@ Get Hermite finite elements elementary matrices for variable coefficients.
   * `f`: the variable coefficient.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/hermite.jl#L81-L90' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/hermite.jl#L81-L90' class='documenter-source'>source</a><br>
 
 <a id='FEMTools.interpolate-Tuple{Any,Any,Any}' href='#FEMTools.interpolate-Tuple{Any,Any,Any}'>#</a>
 **`FEMTools.interpolate`** &mdash; *Method*.
@@ -154,21 +154,55 @@ Interpolates `fd` from `t` to `ti`.
   * `ti`: values in which `fd` is interpolated.
 
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/hermite.jl#L102-L111' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/hermite.jl#L103-L112' class='documenter-source'>source</a><br>
 
 
 <a id='Assembling-functions-1'></a>
 
 ## Assembling functions
 
-<a id='FEMTools.assemble_1d_FE_matrix-Tuple{Any,Any}' href='#FEMTools.assemble_1d_FE_matrix-Tuple{Any,Any}'>#</a>
+<a id='FEMTools.assemble_1d_FE_matrix-Tuple{Array{Float64,2},Int64}' href='#FEMTools.assemble_1d_FE_matrix-Tuple{Array{Float64,2},Int64}'>#</a>
 **`FEMTools.assemble_1d_FE_matrix`** &mdash; *Method*.
 
 
 
 ```
-assemble_1d_FE_matrix(elem, nbNodes)
+assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
+  intNodes = 0, dof1 = 1, dof2 = 1)
 ```
 
+Assemble a finite elements matrix corresponding to a 1 dimensional uniform mesh.
 
-<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/f4d34ce1f90860bfd59a5343d361aa79ef28b867/src/assemble1d.jl#L2-L4' class='documenter-source'>source</a><br>
+**Arguments**
+
+  * `elem` : elementary finite elements matrix
+  * `nbNodes` : number of nodes in the mesh
+  * `intNodes` : number of interior nodes in the interior of each elements
+  * `dof1`     : number of degrees of freedom for each node for lhs
+  * `dof2`     : number of degrees of freedom for each node for rhs
+
+
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/assemble1d.jl#L13-L25' class='documenter-source'>source</a><br>
+
+<a id='FEMTools.assemble_1d_nu_FE_matrix-Tuple{Array{SymPy.Sym,2},Array{Float64,1}}' href='#FEMTools.assemble_1d_nu_FE_matrix-Tuple{Array{SymPy.Sym,2},Array{Float64,1}}'>#</a>
+**`FEMTools.assemble_1d_nu_FE_matrix`** &mdash; *Method*.
+
+
+
+```
+assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
+  intNodes = 0, dof1 = 1, dof2 = 1)
+```
+
+Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform mesh.
+
+**Arguments**
+
+  * `elem` : elementary finite elements matrix (with elements of type SymPy.Sym)
+  * `nodes` : vector of nodes composing the non uniform-mesh
+  * `intNodes` : number of interior nodes in the interior of each elements
+  * `dof1`     : number of degrees of freedom for each node for lhs
+  * `dof2`     : number of degrees of freedom for each node for rhs
+
+
+<a target='_blank' href='https://github.com/ncindea/FEMTools.jl/tree/416f6f5054331a03e60041d86e9d1a8aa7405c58/src/assemble1d.jl#L42-L54' class='documenter-source'>source</a><br>
