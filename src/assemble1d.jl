@@ -5,7 +5,7 @@
 
 A type describing a mesh for a one dimensional domain
 """
-type Mesh1d
+struct Mesh1d
   nodes::Array{Float64, 1}
   elements::Array{Int64, 2}
 end

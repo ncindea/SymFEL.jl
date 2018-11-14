@@ -55,7 +55,7 @@ Get Lagrange finite elements elementary matrices.
   * `m`: number of derivatives on the first function.
   * `n`: number of derivatives on the second function.
 """
-function get_lagange_em(p = 1, m = 0, n = 0)
+function get_lagrange_em(p = 1, m = 0, n = 0)
   M = Array{SymPy.Sym}(p+1, p+1)
   F = get_lagrange_basis(p)
   for i = 1:p+1
