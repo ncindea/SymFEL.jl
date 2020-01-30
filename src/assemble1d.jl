@@ -1,5 +1,5 @@
 # todo : document and add some other nasty functions
-
+using SparseArrays
 """
     Mesh1d
 
@@ -54,6 +54,7 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
 """
 function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
     intNodes = 0, dof1 = 1, dof2 = 1)
+  h = SymPy.symbols("h")
   nbNodes = length(nodes)
   nbNodesTotal = (nbNodes + (nbNodes - 1) * intNodes)
 
@@ -63,7 +64,7 @@ function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64,
     r1 = (i + 1 + i * intNodes) * dof1
     l2 = (i - 1 + (i - 1) * intNodes) * dof2 + 1
     r2 = (i + 1 + i * intNodes) * dof2
-    elem_loc = SymPy.subs(elem, h, nodes[i + 1] - nodes[i])
+    elem_loc = elem.subs(h, nodes[i + 1] - nodes[i])
     M[l1:r1, l2:r2] = M[l1:r1, l2:r2] + elem_loc
   end
   M

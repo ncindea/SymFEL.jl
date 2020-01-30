@@ -5,10 +5,6 @@ module FEMTools
 using SymPy
 
 # polynomial variable
-x = symbols("x")
-xa = symbols("xa")
-xb = symbols("xb")
-h = symbols("h")
 
 include("lagrange.jl")
 include("hermite.jl")
@@ -20,6 +16,7 @@ include("assemble1d.jl")
 Gives an elementary matrices for different elements in each dimension.
 """
 function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
+  x, h = SymPy.symbols("x h")
   if fe1 == "Lagrange"
     if der1 ∈ collect(0:deg1)
       p1 = get_lagrange_basis(deg1)
@@ -54,7 +51,7 @@ function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
 
   l1 = length(p1)
   l2 = length(p2)
-  M = Array{SymPy.Sym}(l1, l2)
+  M = Array{SymPy.Sym}(undef, l1, l2)
   for i = 1:l1
     for j = 1:l2
       M[i, j] = simplify(integrate(diff(p1[i], x, der1) * diff(p2[j], x, der2), (x, 0, h)))

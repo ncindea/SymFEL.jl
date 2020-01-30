@@ -1,17 +1,20 @@
+using LinearAlgebra
 """
     get_lagrange_basis(n = 1, varcoeff = false)
 
 Get Lagrange basis function of order `n`.
 """
 function get_lagrange_basis(n = 1, varcoeff = false)
-  E = eye(Int64, n+1, n+1)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  E = Matrix(1I, n+1, n+1)
   symString = ""
   for i = 1:n
-    symString *= ("a" * bin(i - 1) * " ")
+    symString *= ("a" * string(i - 1, base=10) * " ")
   end
-  symString *= ("a" * bin(n))
+  symString *= ("a" * string(n, base=10))
 
-  L = symbols(symString)
+  L = SymPy.symbols(symString)
 
   basis = []
   # p is a polynomial of degree n
@@ -29,13 +32,13 @@ function get_lagrange_basis(n = 1, varcoeff = false)
     Leq = []
 
     for j = 1:(n + 1)
-      eq = subs(p, x, points[j])
+      eq = SymPy.subs(p, x, points[j])
       push!(Leq, eq)
     end
 
     Leq = Leq - E[1:(n+1), i]
-    LL = solve(convert(Array{SymPy.Sym, 1}, Leq), collect(L[1:(n+1)]))
-
+    LL = SymPy.solve(convert(Array{SymPy.Sym, 1}, Leq), collect(L[1:(n+1)]))
+    LL = convert(Dict{SymPy.Sym, SymPy.Sym}, LL)
     q = 0
     for j = 1:(n+1)
       q = q + LL[L[j]] * x^(j - 1)
@@ -55,8 +58,11 @@ Get Lagrange finite elements elementary matrices.
   * `m`: number of derivatives on the first function.
   * `n`: number of derivatives on the second function.
 """
+
 function get_lagrange_em(p = 1, m = 0, n = 0)
-  M = Array{SymPy.Sym}(p+1, p+1)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  M = Array{SymPy.Sym}(undef, p+1, p+1)
   F = get_lagrange_basis(p)
   for i = 1:p+1
     for j = 1:p+1
@@ -77,7 +83,11 @@ end
   * `f`: the variable coefficient.
 """
 function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
-  M = Array{SymPy.Sym}(p+1, p+1)
+  xa = SymPy.symbols("xa")
+  xb = SymPy.symbols("xb")
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  M = Array{SymPy.Sym}(undef, p+1, p+1)
   F = get_lagrange_basis(p, true)
   for i = 1:p+1
     for j = 1:p+1

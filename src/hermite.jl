@@ -1,18 +1,24 @@
+using LinearAlgebra
 """
     get_hermite_basis(n = 3, varcoeff = false)
 
 Get Hermite basis function of order `n`.
 """
 function get_hermite_basis(n = 3, varcoeff = false)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  xa = SymPy.symbols("xa")
+  xb = SymPy.symbols("xb")
   if (n < 3) || (n % 2 != 1)
+    println("n = ", n)
     error("The degree of Hermite polynomials should be odd and >= 3")
   end
-  E = eye(Int64, n + 1, n + 1)
+  E = Matrix(1I, n + 1, n + 1)
   symString = ""
   for i = 1:n
-    symString *= ("a" * bin(i - 1) * " ")
+    symString *= ("a" * string(i - 1, base=10) * " ")
   end
-  symString *= ("a" * bin(n))
+  symString *= ("a" * string(n, base=10))
 
   L = symbols(symString)
   basis = []
@@ -46,7 +52,7 @@ function get_hermite_basis(n = 3, varcoeff = false)
     end
     Leq = Leq - E[1:(n+1), i]
     LL = solve(convert(Array{SymPy.Sym, 1}, Leq), collect(L[1:(n+1)]))
-
+    LL = convert(Dict{SymPy.Sym, SymPy.Sym}, LL)
     p = 0
     for j = 1:(n+1)
       p = p + LL[L[j]] * x^(j - 1)
@@ -68,7 +74,9 @@ Get Hermite finite elements elementary matrices.
   * `n`: number of derivatives on the second function.
 """
 function get_hermite_em(p = 3, m = 0, n = 0)
-  M = Array{SymPy.Sym}(p+1, p+1)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  M = Array{SymPy.Sym}(undef, p+1, p+1)
   F = get_hermite_basis(p)
   for i = 1:p+1
     for j = 1:p+1
@@ -89,7 +97,11 @@ end
   * `f`: the variable coefficient.
 """
 function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
-  M = Array{SymPy.Sym}(p+1, p+1)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
+  xa = SymPy.symbols("xa")
+  xb = SymPy.symbols("xb")
+  M = Array{SymPy.Sym}(undef, p+1, p+1)
   F = get_hermite_basis(p, true)
   for i = 1:p+1
     for j = 1:p+1
@@ -111,6 +123,8 @@ Interpolates `fd` from `t` to `ti`.
   * `ti`: values in which `fd` is interpolated.
 """
 function interpolate(fd, t, ti)
+  x = SymPy.symbols("x")
+  h = SymPy.symbols("h")
   p = size(fd, 1) # 2*p -1 is the degree of polynomials
   n = size(fd, 2) # number of samples
   if (n != length(t))
