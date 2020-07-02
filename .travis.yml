@@ -19,9 +19,9 @@ before_install:
   - if [ $MPMATH = "true" ]; then julia -e 'using Pkg; Pkg.add("Conda"); using Conda; Conda.add("mpmath")';fi  
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.clone(pwd()); Pkg.test("FEMTools"; coverage=true)'
+  - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.test("FEMTools"; coverage=true)'
 after_success:
   # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("FEMTools")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("FEMTools")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("FEMTools")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("FEMTools")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
