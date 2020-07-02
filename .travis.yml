@@ -14,6 +14,9 @@ env:
     - MPMATH=false
 notifications:
   email: false
+before_install:
+    #install mpmath to test functionallity
+  - if [ $MPMATH = "true" ]; then julia -e 'using Pkg; Pkg.add("Conda"); using Conda; Conda.add("mpmath")';fi  
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.clone(pwd()); Pkg.test("FEMTools"; coverage=true)'
