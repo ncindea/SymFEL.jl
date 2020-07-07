@@ -8,9 +8,10 @@ Consider the following problem. Given \\(f \in C([0, 1])\\), find a function \\(
 ```math
 	\left\{
 	\begin{array}{l}
-	\frac{\partial^4 u}\frac{partial x^4} = f \textrm{ in } (0, 1) \\
+	\dfrac{\partial^4}{\partial x^4}u(x) = f(x) \textrm{ in } (0, 1) \\
 	u(0) = u(1) = 0 \\
-	u'(0) = pi; u'(1) = pi
+	u^\prime(0) = \pi, \qquad u^\prime(1) = -\pi.
+	\end{array}
 	\right.
 ```
 
