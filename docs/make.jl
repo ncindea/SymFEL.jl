@@ -1,3 +1,10 @@
-using Documenter, FEMTools
+using SymPy, Documenter, FEMTools
 
-makedocs()
+makedocs(
+    sitename="FEMTools.jl",
+    pages=[
+        "Home" => "index.md",
+        "Examples" => "examples.md"
+        ]
+    )
+

@@ -17,7 +17,7 @@ FEMTools.get_lagrange_basis(n = 1, varcoeff = false)
 ```
 
 ```@docs
-FEMTools.get_lagange_em(p = 1, m = 0, n = 0)
+FEMTools.get_lagrange_em(p = 1, m = 0, n = 0)
 ```
 
 ```@docs
