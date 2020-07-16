@@ -1,4 +1,4 @@
-# FEMTools Documentation
+# FEMTools.jl Documentation
 
 This package contains several functions usefull for the implementation
 of the finite elements method (FEM). More preciselly, the package
