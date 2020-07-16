@@ -1,4 +1,4 @@
-# FEMTools
+# FEMTools.jl
 
 [![Build Status](https://travis-ci.org/ncindea/FEMTools.jl.svg?branch=master)](https://travis-ci.org/ncindea/FEMTools.jl)
 [![Coverage Status](https://coveralls.io/repos/ncindea/FEMTools.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/ncindea/FEMTools.jl?branch=master)
