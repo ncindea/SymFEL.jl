@@ -9,6 +9,7 @@ using SymPy
 include("lagrange.jl")
 include("hermite.jl")
 include("assemble1d.jl")
+include("assemble2d.jl")
 
 """
   get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
