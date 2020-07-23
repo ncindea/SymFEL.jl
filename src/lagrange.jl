@@ -96,3 +96,36 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
   end
   M
 end
+
+"""
+    get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+
+Get Lagrange finite elements elementary matrices for a squared element.
+
+# Arguments
+  * `(px, py)` : degree of polynomials in the basis.
+  * `(mx, my)` : number of derivatives on the first function wrt x and y
+  * `(nx, ny)` : number of derivatives on the second function wrt x and y
+"""
+function get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    Mx = FEMTools.get_lagrange_em(px, mx, nx)
+    My = FEMTools.get_lagrange_em(py, my, ny)
+
+    node_x = [(1, 2, 2, 1),
+              (1, 3, 3, 1, 2, 3, 2, 1, 2)]
+    node_y = [(1, 1, 2, 2),
+              (1, 1, 3, 3, 1, 2, 3, 2, 2)]
+
+
+    p = (px + 1)*(py + 1)
+    M = Array{SymPy.Sym}(undef, p, p)
+
+    for i = 1:p
+        for j = 1:p
+            M[i,j] = Mx[node_x[px][i], node_x[px][j]] * My[node_y[py][i], node_y[py][j]]
+    end
+    end
+    M
+end
+
+    
