@@ -1,4 +1,4 @@
-# Examples
+# One dimensional examples
 
 ## A second order equation
 

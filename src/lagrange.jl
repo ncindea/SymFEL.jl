@@ -106,6 +106,9 @@ Get Lagrange finite elements elementary matrices for a squared element.
   * `(px, py)` : degree of polynomials in the basis.
   * `(mx, my)` : number of derivatives on the first function wrt x and y
   * `(nx, ny)` : number of derivatives on the second function wrt x and y
+
+# Remarks
+  The current version works only for px, py in {1, 2}
 """
 function get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
     Mx = FEMTools.get_lagrange_em(px, mx, nx)
