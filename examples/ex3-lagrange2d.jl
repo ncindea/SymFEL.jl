@@ -14,8 +14,8 @@ import gmsh
 using WriteVTK
 
 
-using PyPlot
-close("all")
+#using PyPlot
+#close("all")
 
 # symbols 
 x = SymPy.symbols("x")
@@ -48,11 +48,12 @@ elements_int = reshape(convert(Array{Int64}, elements[3][2]), (9, elements_int_N
 #gmsh.fltk.run()
 gmsh.finalize()
 
-# elementary matrices
+# elementary matrices - P2 x P2
 elem_Mxy = FEMTools.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
 elem_Kxy = FEMTools.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +
     FEMTools.get_square_lagrange_em((2, 2), (0, 1), (0, 1))
 
+dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
 
 elem_Kxy_dx = convert(Matrix{Float64}, elem_Kxy.subs(h, dx))
 elem_Mxy_dx = convert(Matrix{Float64}, elem_Mxy.subs(h, dx));
@@ -77,3 +78,15 @@ err = u - u_exact
 
 println("L2 error : ", sqrt(err' * M * err))
 println("H1 error : ", sqrt(err' * K * err))
+
+
+# export to vtk
+cells = [MeshCell(VTKCellTypes.VTK_QUADRATIC_QUAD, elements_int[1:8, i]) for i = 1:elements_int_N]
+
+
+points_x = nodes_coordinate[1, :]
+points_y = nodes_coordinate[2, :]
+vtkfile = vtk_grid("ex3-output", points_x, points_y, cells)
+
+vtkfile["my_point_data", VTKPointData()] = u
+outfiles = vtk_save(vtkfile)
