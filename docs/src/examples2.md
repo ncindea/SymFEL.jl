@@ -6,8 +6,8 @@ Consider the following equation:
 ```math
 	\left\{
 	\begin{array}{l}
-	-\Delta u  = f(x) \textrm{ in } x \in \Omega \\
-	u(0) = 0 \textrm{ on } \Omega,
+	-\Delta u + u  = f \textrm{ in }  \Omega \\
+	u = 0 \textrm{ on } \Omega,
 	\end{array}
 	\right.
 ```
@@ -38,7 +38,7 @@ This mesh is formed by quadratic quad elements.
 
 ![](assets/square.jpg)
 
-`gmsh.jl module should be installed manually following the instructions on gmsh [web page](https://gmsh.info/#Download)
+`gmsh.jl` module should be installed manually following the instructions on gmsh [web page](https://gmsh.info/#Download)
 	
 ```@example 2
 gmsh.initialize()

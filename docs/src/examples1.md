@@ -239,5 +239,5 @@ U_exact = zeros(2*N)
 U_exact[1:2:2*N-1] = u_exact
 U_exact[2:2:2*N] = ud_exact
 err = u - U_exact;
-println("H1 error = ", sqrt(err' * K * err))
+println("H2 error = ", sqrt(err' * K * err))
 ```
