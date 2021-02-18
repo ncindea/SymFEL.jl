@@ -6,7 +6,7 @@
 # u = 0 on \Gamma
 
 using Revise
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -49,9 +49,9 @@ elements_int = reshape(convert(Array{Int64}, elements[3][2]), (9, elements_int_N
 gmsh.finalize()
 
 # elementary matrices - P2 x P2
-elem_Mxy = FEMTools.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
-elem_Kxy = FEMTools.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +
-    FEMTools.get_square_lagrange_em((2, 2), (0, 1), (0, 1))
+elem_Mxy = FE.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
+elem_Kxy = FE.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +
+    FE.get_square_lagrange_em((2, 2), (0, 1), (0, 1))
 
 dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
 
@@ -59,8 +59,8 @@ elem_Kxy_dx = convert(Matrix{Float64}, elem_Kxy.subs(h, dx))
 elem_Mxy_dx = convert(Matrix{Float64}, elem_Mxy.subs(h, dx));
 
 # global matrices
-K = FEMTools.assemble_squaremesh_FE_matrix(elem_Kxy_dx, elements_int, order1=2, order2=2)
-M = FEMTools.assemble_squaremesh_FE_matrix(elem_Mxy_dx, elements_int, order1=2, order2=2)
+K = FE.assemble_squaremesh_FE_matrix(elem_Kxy_dx, elements_int, order1=2, order2=2)
+M = FE.assemble_squaremesh_FE_matrix(elem_Mxy_dx, elements_int, order1=2, order2=2)
 
 f = (2*pi^2 + 1) * sin.(pi * nodes_coordinate[1,:]) .* sin.(pi * nodes_coordinate[2,:])
 

@@ -14,7 +14,7 @@ Consider the following equation:
 with \\( \Omega = (0, 1) \times (0, 1)\\).
 
 ```@example 2
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -67,9 +67,9 @@ nothing #hide
 
 ### elementary matrices - P2 x P2
 ```@example 2
-elem_Mxy = FEMTools.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
-elem_Kxy = FEMTools.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +
-    FEMTools.get_square_lagrange_em((2, 2), (0, 1), (0, 1))
+elem_Mxy = FE.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
+elem_Kxy = FE.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +
+    FE.get_square_lagrange_em((2, 2), (0, 1), (0, 1))
 
 dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
 
@@ -80,8 +80,8 @@ nothing #hide
 
 ### global matrices
 ```@example 2
-K = FEMTools.assemble_squaremesh_FE_matrix(elem_Kxy_dx, elements_int, order1=2, order2=2)
-M = FEMTools.assemble_squaremesh_FE_matrix(elem_Mxy_dx, elements_int, order1=2, order2=2)
+K = FE.assemble_squaremesh_FE_matrix(elem_Kxy_dx, elements_int, order1=2, order2=2)
+M = FE.assemble_squaremesh_FE_matrix(elem_Mxy_dx, elements_int, order1=2, order2=2)
 nothing #hide
 ```
 
@@ -145,7 +145,7 @@ L'affichage est obtenu à l'aide de Paraview à partir du fichier "ex3-output.vt
 
 ## A fourth order equation
 
-The corresponding program can be downloaded [here](https://github.com/ncindea/FEMTools.jl/blob/master/examples/ex4-bilaplacian2d.jl).
+The corresponding program can be downloaded [here](https://github.com/ncindea/FE.jl/blob/master/examples/ex4-bilaplacian2d.jl).
 
 Consider the following equation:
 ```math
@@ -179,7 +179,7 @@ nothing #hide
 
 ### discretization parameters
 
-We use the mesh [simple-square.msh](https://github.com/ncindea/FEMTools.jl/blob/master/examples/square-simple.msh) (in gmsh format).
+We use the mesh [simple-square.msh](https://github.com/ncindea/FE.jl/blob/master/examples/square-simple.msh) (in gmsh format).
 
 This mesh is formed by square elements.
 
@@ -213,11 +213,11 @@ nothing #hide
 ### elementary matrices - P2 x P2
 
 ```@example 3
-elem_M = FEMTools.get_square_hermite_em((3, 3), (0, 0), (0, 0))
-elem_K = FEMTools.get_square_hermite_em((3, 3), (2, 0), (2, 0)) +
-    FEMTools.get_square_hermite_em((3, 3), (2, 0), (0, 2)) +
-    FEMTools.get_square_hermite_em((3, 3), (0, 2), (2, 0)) +
-    FEMTools.get_square_hermite_em((3, 3), (0, 2), (0, 2))
+elem_M = FE.get_square_hermite_em((3, 3), (0, 0), (0, 0))
+elem_K = FE.get_square_hermite_em((3, 3), (2, 0), (2, 0)) +
+    FE.get_square_hermite_em((3, 3), (2, 0), (0, 2)) +
+    FE.get_square_hermite_em((3, 3), (0, 2), (2, 0)) +
+    FE.get_square_hermite_em((3, 3), (0, 2), (0, 2))
 
 dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx))
@@ -228,10 +228,10 @@ nothing #hide
 ### global matrices
 
 ```@example 3
-K = FEMTools.assemble_squaremesh_FE_matrix(elem_K_dx, elements_int,
+K = FE.assemble_squaremesh_FE_matrix(elem_K_dx, elements_int,
                                            order1=1, order2=1,
                                            dof1=4, dof2=4)
-M = FEMTools.assemble_squaremesh_FE_matrix(elem_M_dx, elements_int,
+M = FE.assemble_squaremesh_FE_matrix(elem_M_dx, elements_int,
                                            order1=1, order2 = 1,
                                            dof1=4, dof2=4)
 nothing #hide

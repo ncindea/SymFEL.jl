@@ -1,7 +1,7 @@
 using SymPy, Documenter, FEMTools
 
 makedocs(
-    sitename="FEMTools.jl",
+    sitename="FE.jl",
     format = Documenter.HTML(mathengine=Documenter.Writers.HTMLWriter.MathJax2()),
     
     pages=[

@@ -6,7 +6,7 @@
 # u = \Delta u = 0 on \Gamma
 
 using Revise
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -49,21 +49,21 @@ elements_int = reshape(convert(Array{Int64}, elements[3][2]), (4, elements_int_N
 gmsh.finalize()
 
 # elementary matrices - P2 x P2
-elem_M = FEMTools.get_square_hermite_em((3, 3), (0, 0), (0, 0))
-elem_K = FEMTools.get_square_hermite_em((3, 3), (2, 0), (2, 0)) +
-    FEMTools.get_square_hermite_em((3, 3), (2, 0), (0, 2)) +
-    FEMTools.get_square_hermite_em((3, 3), (0, 2), (2, 0)) +
-    FEMTools.get_square_hermite_em((3, 3), (0, 2), (0, 2))
+elem_M = FE.get_square_hermite_em((3, 3), (0, 0), (0, 0))
+elem_K = FE.get_square_hermite_em((3, 3), (2, 0), (2, 0)) +
+    FE.get_square_hermite_em((3, 3), (2, 0), (0, 2)) +
+    FE.get_square_hermite_em((3, 3), (0, 2), (2, 0)) +
+    FE.get_square_hermite_em((3, 3), (0, 2), (0, 2))
 
 dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx))
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
 # global matrices
-K = FEMTools.assemble_squaremesh_FE_matrix(elem_K_dx, elements_int,
+K = FE.assemble_squaremesh_FE_matrix(elem_K_dx, elements_int,
                                            order1=1, order2=1,
                                            dof1=4, dof2=4)
-M = FEMTools.assemble_squaremesh_FE_matrix(elem_M_dx, elements_int,
+M = FE.assemble_squaremesh_FE_matrix(elem_M_dx, elements_int,
                                            order1=1, order2 = 1,
                                            dof1=4, dof2=4)
  

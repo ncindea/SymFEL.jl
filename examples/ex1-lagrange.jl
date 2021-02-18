@@ -5,7 +5,7 @@
 # u(0) = u(1) = 0
 
 
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -29,13 +29,13 @@ x = SymPy.symbols("x");
 h = SymPy.symbols("h");
 
 # elementary matrices
-elem_K = FEMTools.get_lagrange_em(1, 1, 1);
-elem_M = FEMTools.get_lagrange_em(1, 0, 0);
+elem_K = FE.get_lagrange_em(1, 1, 1);
+elem_M = FE.get_lagrange_em(1, 0, 0);
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-K = FEMTools.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-M = FEMTools.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+K = FE.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
+M = FE.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
 
 F = M * f;
 
@@ -77,8 +77,8 @@ for N = NV
     elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
     elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-    K = FEMTools.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-    M = FEMTools.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+    K = FE.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
+    M = FE.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
 
     F = M * f;
 
