@@ -113,6 +113,40 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
 end
 
 """
+    get_square_hermite_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+
+Get Hermite finite elements elementary matrices for a squared element.
+
+# Arguments
+  * `(px, py)` : degree of polynomials in the basis.
+  * `(mx, my)` : number of derivatives on the first function wrt x and y
+  * `(nx, ny)` : number of derivatives on the second function wrt x and y
+
+"""
+function get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    Mx = FEMTools.get_hermite_em(px, mx, nx)
+    My = FEMTools.get_hermite_em(py, my, ny)
+
+    node_x = [(1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 1, 2, 1, 2)
+              ]
+    node_y = [(1, 1, 2, 2, 1, 1, 2, 2, 3, 3, 4, 4, 3, 3, 4, 4)]
+
+
+    kx = div(px, 2)
+    ky = div(py, 2)
+    p = (px + 1)*(py + 1)
+    M = Array{SymPy.Sym}(undef, p, p)
+
+    for i = 1:p
+        for j = 1:p
+            M[i,j] = Mx[node_x[kx][i], node_x[kx][j]] * My[node_y[ky][i], node_y[ky][j]]
+        end
+    end
+    M
+end
+
+
+"""
     interpolate(fd::Matrix{Float64}, t::Vector{Float64}, ti::Vector{Float64})
 
 Interpolates `fd` from `t` to `ti`.
@@ -160,3 +194,4 @@ function interpolate(fd, t, ti)
   fi[ni] = fd[1, n]
   fi
 end
+
