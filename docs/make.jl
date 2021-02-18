@@ -1,4 +1,4 @@
-using SymPy, Documenter, FEMTools
+using SymPy, Documenter, FE
 
 makedocs(
     sitename="FE.jl",

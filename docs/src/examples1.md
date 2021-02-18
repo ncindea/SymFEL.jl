@@ -156,7 +156,7 @@ Consider the following problem. Given \\(f \in C([0, 1])\\), find a function \\(
 ```
 
 ```@example 1
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays

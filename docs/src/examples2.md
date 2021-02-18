@@ -161,7 +161,7 @@ with \\( \Omega = (0, 1) \times (0, 1)\\).
 
 ```@example 3
 using Revise
-using FEMTools
+using FE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -303,10 +303,11 @@ nothing #hide
 
 ### affichage de la solution
 
-|------------------------|-------------------------|
-| ![](plots/ex4-u.jpeg)  | ![](plots/ex4-ux.jpeg)  |
-| ![](plots/ex4-uy.jpeg) | ![](plots/ex4-uxy.jpeg) |
-|------------------------|-------------------------|
+
+![](plots/ex4-u.jpeg) 
+![](plots/ex4-ux.jpeg) 
+![](plots/ex4-uy.jpeg) 
+![](plots/ex4-uxy.jpeg) 
 
 
 
