@@ -45,10 +45,10 @@ function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
         l = nodes1_i[l]
         r = nodes2_i[r]
         for j = 1:dof1
-            l2[(j - 1)*n_order1 + 1:n_order1] = dof1 * (l .- 1)  .+ j
+            l2[dof1 * ((1:n_order1).-1) .+ j] = dof1 * (l .- 1)  .+ j
         end
         for j = 1:dof2
-            r2[(j - 1)*n_order2 + 1:n_order2] = dof2 * (r .- 1)  .+ j
+            r2[dof2 * ((1:n_order2).-1) .+ j] = dof2 * (r .- 1)  .+ j
         end
         M[l2, r2] +=  el_mat
   end
