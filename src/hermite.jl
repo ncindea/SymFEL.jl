@@ -21,7 +21,7 @@ function get_hermite_basis(n = 3, varcoeff = false)
   symString *= ("a" * string(n, base=10))
 
   L = symbols(symString)
-  basis = []
+  basis = Array{SymPy.Sym}(undef, n+1)
   # p is a polynomial of degree n
   p = 0
   for i = 1:n+1
@@ -57,7 +57,7 @@ function get_hermite_basis(n = 3, varcoeff = false)
     for j = 1:(n+1)
       p = p + LL[L[j]] * x^(j - 1)
     end
-    push!(basis, p)
+    basis[i] = p
   end
   basis
 end
@@ -113,7 +113,7 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
 end
 
 """
-    get_square_hermite_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0))
 
 Get Hermite finite elements elementary matrices for a squared element.
 
@@ -127,8 +127,7 @@ function get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = 
     Mx = FEMTools.get_hermite_em(px, mx, nx)
     My = FEMTools.get_hermite_em(py, my, ny)
 
-    node_x = [(1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 1, 2, 1, 2)
-              ]
+    node_x = [(1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 1, 2, 1, 2)]
     node_y = [(1, 1, 2, 2, 1, 1, 2, 2, 3, 3, 4, 4, 3, 3, 4, 4)]
 
 

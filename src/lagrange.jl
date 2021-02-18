@@ -16,7 +16,7 @@ function get_lagrange_basis(n = 1, varcoeff = false)
 
   L = SymPy.symbols(symString)
 
-  basis = []
+  basis = Array{SymPy.Sym}(undef, n+1)
   # p is a polynomial of degree n
   p = 0
 
@@ -43,7 +43,7 @@ function get_lagrange_basis(n = 1, varcoeff = false)
     for j = 1:(n+1)
       q = q + LL[L[j]] * x^(j - 1)
     end
-    push!(basis, q)
+    basis[i] = q
   end
   basis
 end
