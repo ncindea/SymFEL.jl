@@ -1,7 +1,7 @@
-using SymPy, Documenter, SymFE
+using SymPy, Documenter, SymFEL
 
 makedocs(
-    sitename="FE.jl",
+    sitename="SymFEL.jl",
     format = Documenter.HTML(mathengine=Documenter.Writers.HTMLWriter.MathJax2()),
     
     pages=[
