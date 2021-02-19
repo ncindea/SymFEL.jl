@@ -1,5 +1,7 @@
 name = "FE"
 uuid = "98344202-5a1c-56b1-83aa-57a11ac3493f"
+authors=["Nicolae Cindea <Nicolae.Cindea@uca.fr>"]
+version = "0.1.1"
 
 [compat]
 SymPy = "≥ 1.0"
