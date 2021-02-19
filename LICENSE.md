@@ -1,6 +1,6 @@
-FE.jl package is licensed under the MIT "Expat" License:
+SymFEL.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2017: Nicolae Cindea.
+> Copyright (c) 2017-2021: Nicolae Cindea.
 > 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal

@@ -1,6 +1,6 @@
 # Copyright 2017-2021 Nicolae Cindea
 # See accompanying license file.
-module FE
+module SymFEL
 
 using SymPy
 

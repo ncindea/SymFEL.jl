@@ -124,8 +124,8 @@ Get Hermite finite elements elementary matrices for a squared element.
 
 """
 function get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0))
-    Mx = FE.get_hermite_em(px, mx, nx)
-    My = FE.get_hermite_em(py, my, ny)
+    Mx = get_hermite_em(px, mx, nx)
+    My = get_hermite_em(py, my, ny)
 
     node_x = [(1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 1, 2, 1, 2)]
     node_y = [(1, 1, 2, 2, 1, 1, 2, 2, 3, 3, 4, 4, 3, 3, 4, 4)]

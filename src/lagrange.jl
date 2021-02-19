@@ -111,8 +111,8 @@ Get Lagrange finite elements elementary matrices for a squared element.
   The current version works only for px, py in {1, 2}
 """
 function get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
-    Mx = FE.get_lagrange_em(px, mx, nx)
-    My = FE.get_lagrange_em(py, my, ny)
+    Mx = get_lagrange_em(px, mx, nx)
+    My = get_lagrange_em(py, my, ny)
 
     node_x = [(1, 2, 2, 1),
               (1, 3, 3, 1, 2, 3, 2, 1, 2)]

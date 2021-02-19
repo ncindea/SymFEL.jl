@@ -12,7 +12,7 @@ Consider the following equation:
 	\right.
 ```
 ```@example 0
-using FE
+using SymFE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -156,7 +156,7 @@ Consider the following problem. Given \\(f \in C([0, 1])\\), find a function \\(
 ```
 
 ```@example 1
-using FE
+using SymFE
 using SymPy
 using LinearAlgebra
 using SparseArrays
@@ -191,13 +191,13 @@ nothing # hide
 
 ### Finite element matrices
 ```@example 1
-elem_K = FE.get_hermite_em(3, 2, 2);
-elem_M = FE.get_em(3, 1, 0, 0; fe1="Hermite", fe2="Lagrange")
+elem_K = SymFE.get_hermite_em(3, 2, 2);
+elem_M = SymFE.get_em(3, 1, 0, 0; fe1="Hermite", fe2="Lagrange")
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-K = FE.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=2, dof2=2);
-M = FE.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=2, dof2=1);
+K = SymFE.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=2, dof2=2);
+M = SymFE.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=2, dof2=1);
 
 # f is approached by an P1 function
 F = M * f;

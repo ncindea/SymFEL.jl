@@ -9,11 +9,5 @@ notifications:
 env:
     global:
     - PYTHON=conda
-    matrix:
-    - MPMATH=true
-    - MPMATH=false
 notifications:
   email: false
-before_install:
-    #install mpmath to test functionallity
-  - if [ $MPMATH = "true" ]; then julia -e 'using Pkg; Pkg.add("Conda"); using Conda; Conda.add("mpmath")';fi  
