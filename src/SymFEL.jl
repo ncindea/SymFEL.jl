@@ -19,14 +19,59 @@ export y
 export z
 export h
 export xa, xb
-x, y, z, h = SymPy.symbols("x y z h")
+
+"""
+    x = SymPy.symbols("x")
+
+Symbolic variable x.
+
+This variable is exported.
+"""
+x = SymPy.symbols("x")
+
+"""
+    y = SymPy.symbols("y")
+
+Symbolic variable y.
+
+This variable is exported.
+"""
+y = SymPy.symbols("y")
+
+"""
+    z = SymPy.symbols("z")
+
+Symbolic variable z.
+
+This variable is exported.
+"""
+z = SymPy.symbols("z")
+
+"""
+    h = SymPy.symbols("h")
+
+Symbolic variable h.
+
+This variable is exported.
+"""
+h = SymPy.symbols("h")
+
+"""
+    xa, xb = SymPy.symbols("xa xb")
+
+Symbolic vaiables xa and xb.
+
+This variables are used for variable coefficients problems. This variables are exported.
+"""
 xa, xb = SymPy.symbols("xa xb")
 
 """
     get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
 
-    Gives an elementary matrices for different elements in each dimension.
-        """
+Gives 1d elementary matrices for Lagrange and Hermite elements.
+
+The elementary matrices are computed for elements of length `h`.
+"""
 function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
     global x
     global h

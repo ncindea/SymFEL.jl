@@ -50,15 +50,15 @@ function get_lagrange_basis(n = 1, varcoeff = false)
 end
 
 """
-        get_lagrange_em(p = 1, m = 0, n = 0)
+    get_lagrange_em(p = 1, m = 0, n = 0)
 
-    Get Lagrange finite elements elementary matrices.
+Get Lagrange finite elements elementary matrices.
 
-    # Arguments
-      * `p`: degree of polynomials in the basis.
-      * `m`: number of derivatives on the first function.
-      * `n`: number of derivatives on the second function.
-    """
+# Arguments
+  * `p`: degree of polynomials in the basis.
+  * `m`: number of derivatives on the first function.
+  * `n`: number of derivatives on the second function.
+"""
 function get_lagrange_em(p = 1, m = 0, n = 0)
     global x
     global h
@@ -73,15 +73,16 @@ function get_lagrange_em(p = 1, m = 0, n = 0)
 end
 
 """
-        get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
-        Get Hermite finite elements elementary matrices for variable coefficients.
+    get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
 
-    # Arguments
-      * `p`: degree of polynomials in the basis.
-      * `m`: number of derivatives on the first function.
-      * `n`: number of derivatives on the second function.
-      * `f`: the variable coefficient.
-    """
+Get Hermite finite elements elementary matrices for variable coefficients.
+
+# Arguments
+* `p`: degree of polynomials in the basis.
+* `m`: number of derivatives on the first function.
+* `n`: number of derivatives on the second function.
+* `f`: the variable coefficient.
+"""
 function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
     # does not work properly
     # TODO: fix it
@@ -101,18 +102,18 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
 end
 
 """
-        get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
 
-    Get Lagrange finite elements elementary matrices for a squared element.
+Get Lagrange finite elements elementary matrices for a squared element.
 
-    # Arguments
-      * `(px, py)` : degree of polynomials in the basis.
-      * `(mx, my)` : number of derivatives on the first function wrt x and y
-      * `(nx, ny)` : number of derivatives on the second function wrt x and y
+# Arguments
+  * `(px, py)` : degree of polynomials in the basis.
+  * `(mx, my)` : number of derivatives on the first function wrt x and y
+  * `(nx, ny)` : number of derivatives on the second function wrt x and y
 
-    # Remarks
-      The current version works only for px, py in {1, 2}
-    """
+# Remarks
+  The current version works only for px, py in {1, 2}
+"""
 function get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
     Mx = get_lagrange_em(px, mx, nx)
     My = get_lagrange_em(py, my, ny)

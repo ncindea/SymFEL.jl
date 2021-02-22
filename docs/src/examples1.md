@@ -20,9 +20,6 @@ using SparseArrays
 using PyPlot
 close("all")
 
-# symbols 
-x = SymPy.symbols("x");
-h = SymPy.symbols("h");
 nothing #hide
 ```
 
@@ -164,9 +161,6 @@ using SparseArrays
 using PyPlot
 close("all")
 
-# symbols 
-x = SymPy.symbols("x");
-h = SymPy.symbols("h");
 nothing # hide
 ```
 

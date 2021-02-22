@@ -1,9 +1,10 @@
 # todo : document and add some other nasty functions
 using SparseArrays
+
 """
     Mesh1d
 
-A type describing a mesh for a one dimensional domain
+A type describing a mesh for a one dimensional domain.
 """
 struct Mesh1d
     nodes::Array{Float64, 1}

@@ -7,7 +7,7 @@
 | [![Build Status](https://travis-ci.org/ncindea/SymFEL.jl.svg?branch=master)](https://travis-ci.org/ncindea/SymFEL.jl) |
 
 
-This package contains several functions usefull for the implementation of the finite elements method (FEM). We use the package `SymPy` for the computation of the basis finite element functions for both Lagrange and Hermite finite elements and. We also compute the elementary matrices in 1d and for quadragular elements in 2d. 
+This package contains several functions usefull for the implementation of the finite elements method (FEM). We use the package `SymPy` for the computation of the basis finite element functions for both Lagrange and Hermite finite elements. We also compute the elementary matrices in 1d and for quadragular elements in 2d. 
 For the two dimensional meshes we employ [Gmsh](https://gmsh.info/). The Gmsh SDK should be installed in your path following the instruction on the Gmsh site.
 
 The utilisation of the package is illustrated by several examples in 1d and 2d.
@@ -19,6 +19,20 @@ Here are some features to develop in the next versions:
 - 2d triangular finite elements
 - 3d tetrahedral finite elements
 - combine the symbolic integration to numerical integration to speed-up the execution.
+
+## Contents
+```@contents
+Pages = ["index.md", "examples1.md", "examples2.md"]
+```
+
+## SymFEl.jl
+
+```@docs
+x
+y
+z
+h
+```
 
 ```@docs
 SymFEL.get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
@@ -63,6 +77,10 @@ SymFEL.interpolate(fd, t, ti)
 ```
 
 ## Assembling functions -- 1d
+
+```@docs
+SymFEL.Mesh1d
+```
 
 ```@docs
 SymFEL.assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;

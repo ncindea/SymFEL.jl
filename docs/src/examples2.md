@@ -23,13 +23,6 @@ using WriteVTK
 nothing #hide
 ```
 
-### symbols 
-```@example 2
-x = SymPy.symbols("x")
-h = SymPy.symbols("h")
-nothing #hide
-```
-
 ### discretization parameters
 
 We use the mesh [square.msh](assets/square.msh) (in gmsh format).
@@ -167,13 +160,6 @@ using LinearAlgebra
 using SparseArrays
 import gmsh
 using WriteVTK
-nothing #hide
-```
-
-### symbols 
-```@example 3
-x = SymPy.symbols("x")
-h = SymPy.symbols("h")
 nothing #hide
 ```
 

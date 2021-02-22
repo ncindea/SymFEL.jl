@@ -1,3 +1,4 @@
 #!/bin/sh
-julia -e 'include("docs/make.jl")'
-scp -P 4220 -r docs/build/* localhost:~/.public_html/software/SymFEL.jl
+julia --color=yes -e 'include("docs/make.jl")'
+rsync -rvz -e 'ssh -p 4220' --progress docs/build/ cindea@localhost:~/.public_html/software/SymFEL.jl
+
