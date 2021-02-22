@@ -28,10 +28,6 @@ ff = zeros(2*N);
 ff[1:2:2*N-1] = f;
 ff[2:2:2*N] = fd;
 
-# symbols 
-x = SymPy.symbols("x");
-h = SymPy.symbols("h");
-
 # elementary matrices
 elem_K = SymFEL.get_hermite_em(3, 2, 2);
 elem_M = SymFEL.get_em(3, 3, 0, 0; fe1="Hermite", fe2="Hermite")

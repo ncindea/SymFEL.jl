@@ -1,21 +1,21 @@
 using SparseArrays
 
 """
-    assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
-                                  elements::Array{Int64, 2};
-                                  order1 = 1, order2 = 1,
-                                  dof1 = 1, dof2 = 1)
+        assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
+                                      elements::Array{Int64, 2};
+                                      order1 = 1, order2 = 1,
+                                      dof1 = 1, dof2 = 1)
 
-Assemble a finite elements matrix corresponding to a 2 dimensional square mesh.
+    Assemble a finite elements matrix corresponding to a 2 dimensional square mesh.
 
-# Arguments
-  * `el_mat`   : elementary finite elements matrix
-  * `elements` : list of elements
-  * `order1`   : order for lhs
-  * `order2`   : order for rhs
-  * `dof1`     : number of degrees of freedom for each node for lhs
-  * `dof2`     : number of degrees of freedom for each node for rhs
-    """
+    # Arguments
+      * `el_mat`   : elementary finite elements matrix
+      * `elements` : list of elements
+      * `order1`   : order for lhs
+      * `order2`   : order for rhs
+      * `dof1`     : number of degrees of freedom for each node for lhs
+      * `dof2`     : number of degrees of freedom for each node for rhs
+        """
 function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
                                        elements::Array{Int64, 2};
                                        order1 = 1,
@@ -51,6 +51,6 @@ function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
             r2[dof2 * ((1:n_order2).-1) .+ j] = dof2 * (r .- 1)  .+ j
         end
         M[l2, r2] +=  el_mat
-  end
-  M
+    end
+    M
 end

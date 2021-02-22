@@ -13,14 +13,6 @@ using SparseArrays
 import gmsh
 using WriteVTK
 
-
-#using PyPlot
-#close("all")
-
-# symbols 
-x = SymPy.symbols("x")
-h = SymPy.symbols("h")
-
 ## discretization parameters
 # we use the mesh square.msh (in gmsh format)
 # obtained from square.geo using gmsh

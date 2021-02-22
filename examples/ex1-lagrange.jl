@@ -24,10 +24,6 @@ u_exact = nodes .* sin.(pi * nodes);
 # right hand 
 f = (1 + pi^2) * nodes .* sin.(pi * nodes) - 2 * pi * cos.(pi * nodes);
 
-# symbols 
-x = SymPy.symbols("x");
-h = SymPy.symbols("h");
-
 # elementary matrices
 elem_K = SymFEL.get_lagrange_em(1, 1, 1);
 elem_M = SymFEL.get_lagrange_em(1, 0, 0);
