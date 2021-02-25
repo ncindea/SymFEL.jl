@@ -196,7 +196,7 @@ gmsh.finalize()
 nothing #hide
 ```
 
-### elementary matrices - P2 x P2
+### elementary matrices - Hermite P3 x Hermite P3
 
 ```@example 3
 elem_M = SymFEL.get_square_hermite_em((3, 3), (0, 0), (0, 0))
