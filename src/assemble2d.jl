@@ -117,3 +117,58 @@ function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
     M
 end
 
+"""
+    assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
+                                    elements::Array{Int64, 2},
+                                    el_labels::Array{Int64, 1};
+                                    order1 = 1, 
+                                    order2 = 1,
+                                    dof1 = 1, 
+                                    dof2 = 1)
+
+Assemble a finite elements matrix corresponding to a 2 dimensional square mesh.
+
+# Arguments
+  * `el_mat`   : elementary finite elements matrix
+  * `elements` : list of elements
+  * `elements1s`: list of 1d elements
+  * `order1`   : order for lhs
+  * `order2`   : order for rhs
+  * `dof1`     : number of degrees of freedom for each node for lhs
+  * `dof2`     : number of degrees of freedom for each node for rhs
+"""
+function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
+                                         elements::Array{Int64, 2},
+                                         elements1d::Array{Int64, 2};
+                                         order1 = 1,
+                                         order2 = 1,
+                                         dof1 = 1,
+                                         dof2 = 1)
+    
+    n_order1 = 4 + (order1 - 1) * (order1 + 3)
+    n_order2 = order2 + 1
+    nodes = sort(unique(elements[1:n_order1,:][:]))
+
+    nodes_N = length(nodes)
+    
+
+    elements1d_N = size(elements1d, 2)
+    M = spzeros(Float64, nodes_N * dof1, nodes_N * dof2)
+
+    r2 = zeros(Int64, n_order2 * dof2)
+    l2 = zeros(Int64, n_order2 * dof2)
+    for i = 1:elements1d_N
+        l = elements1d[1:n_order2, i]
+        r = elements1d[1:n_order2, i]
+        
+        
+        for j = 1:dof2
+            l2[dof2 * ((1:n_order2).-1) .+ j] = dof1 * (l .- 1)  .+ j
+        end
+        for j = 1:dof2
+            r2[dof2 * ((1:n_order2).-1) .+ j] = dof2 * (r .- 1)  .+ j
+        end
+        M[l2, r2] +=  el_mat
+    end
+    M
+end
