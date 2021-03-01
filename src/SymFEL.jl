@@ -119,4 +119,44 @@ function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
 end
 
 
+"""
+    get_square_em(Mx::Array{SymPy.Sym, 2},
+                  My::Array{SymPy.Sym, 2},
+                  nc::Tuple{Array{Int64,1},Array{Int64,1}},
+                  nr::Tuple{Array{Int64,1},Array{Int64,1}})get_quad_em(Mx)
+
+Get elementary matrices for a squared or a rectangular element.
+
+# Arguments
+  * `Mx` : elementary matrix for the x variable.
+  * `My` : elementary matrix for the y variable
+  * `nc` : order of nodes for column
+  * `nr` : order of nodes for row
+
+"""
+function get_square_em(Mx::Array{SymPy.Sym, 2},
+                       My::Array{SymPy.Sym, 2},
+                       nc::Tuple{Array{Int64,1},Array{Int64,1}},
+                       nr::Tuple{Array{Int64,1},Array{Int64,1}})
+    
+
+    pxc = size(Mx, 2)
+    pxr = size(Mx, 1)
+
+    pyc = size(My, 2)
+    pyr = size(My, 1)
+
+    pc = pxc * pyc
+    pr = pxr * pyr
+    
+    M = Array{SymPy.Sym}(undef, pr, pc)
+
+    for i = 1:pr
+        for j = 1:pc
+            M[i,j] = Mx[nr[1][i], nc[1][j]] * My[nr[2][i], nc[2][j]]
+        end
+    end
+    M
+end
+
 end # module
