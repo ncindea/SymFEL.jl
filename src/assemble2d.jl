@@ -186,7 +186,7 @@ function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
     M = spzeros(Float64, nodes_N * dof1, nodes_N * dof2)
 
     r2 = zeros(Int64, n_order2 * dof2)
-    l2 = zeros(Int64, n_order2 * dof1)
+    l2 = zeros(Int64, n_order2 * dof2)
     for i = 1:elements1d_N
         l = elements1d[1:n_order2, i]
         r = elements1d[1:n_order2, i]
