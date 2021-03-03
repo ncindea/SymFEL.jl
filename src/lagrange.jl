@@ -29,16 +29,22 @@ function get_lagrange_basis(n = 1, varcoeff = false)
         push!(points, i * h / n)
     end
 
+    
     for i = 1:(n + 1)
-        Leq = []
+        Leq = zeros(Sym, n+1)
 
         for j = 1:(n + 1)
             eq = SymPy.subs(p, x, points[j])
-            push!(Leq, eq)
+            Leq[j] = eq
         end
 
-        Leq = Leq - E[1:(n+1), i]
-        LL = SymPy.solve(convert(Array{SymPy.Sym, 1}, Leq), collect(L[1:(n+1)]))
+        Leq = Leq .- E[1:(n+1), i]
+        if n == 0
+            L2 = zeros(Sym, 1)
+            L2[1] = L
+            L = L2
+        end
+        LL = SymPy.solve(Leq, collect(L))
         LL = convert(Dict{SymPy.Sym, SymPy.Sym}, LL)
         q = 0
         for j = 1:(n+1)
