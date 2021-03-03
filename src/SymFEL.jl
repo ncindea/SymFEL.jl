@@ -12,12 +12,16 @@ include("lagrange.jl")
 include("hermite.jl")
 include("assemble1d.jl")
 include("assemble2d.jl")
+include("assemble3d.jl")
 
 
 export x
 export y
 export z
 export h
+export hx
+export hy
+export hz
 export xa, xb
 
 """
@@ -55,6 +59,36 @@ Symbolic variable h.
 This variable is exported.
 """
 h = SymPy.symbols("h")
+
+"""
+    hx = SymPy.symbols("hx")
+
+Symbolic variable h.
+
+This variable is exported.
+"""
+hx = SymPy.symbols("hx")
+
+"""
+    hy = SymPy.symbols("hy")
+
+Symbolic variable hy.
+
+This variable is exported.
+"""
+hy = SymPy.symbols("hy")
+
+
+"""
+    hz = SymPy.symbols("hz")
+
+Symbolic variable hz.
+
+This variable is exported.
+"""
+hz = SymPy.symbols("hz")
+
+
 
 """
     xa, xb = SymPy.symbols("xa xb")
@@ -123,7 +157,7 @@ end
     get_square_em(Mx::Array{SymPy.Sym, 2},
                   My::Array{SymPy.Sym, 2},
                   nc::Tuple{Array{Int64,1},Array{Int64,1}},
-                  nr::Tuple{Array{Int64,1},Array{Int64,1}})get_quad_em(Mx)
+                  nr::Tuple{Array{Int64,1},Array{Int64,1}})
 
 Get elementary matrices for a squared or a rectangular element.
 
@@ -159,4 +193,52 @@ function get_square_em(Mx::Array{SymPy.Sym, 2},
     M
 end
 
+"""
+    get_cube_em(Mx::Array{SymPy.Sym, 2},
+                My::Array{SymPy.Sym, 2},
+                Mz::Array{SymPy.Sym, 2},
+                nc::Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}},
+                nr::Tuple{Array{Int64,1},Array{Int64,1}},Array{Int64,1})
+
+Get elementary matrices for a cube or a paraleliped element.
+
+# Arguments
+  * `Mx` : elementary matrix for the x variable.
+  * `My` : elementary matrix for the y variable
+  * `Mz` : elementary matrix for the z variable
+  * `nc` : order of nodes for column
+  * `nr` : order of nodes for row
+
+"""
+function get_cube_em(Mx::Array{SymPy.Sym, 2},
+                     My::Array{SymPy.Sym, 2},
+                     Mz::Array{SymPy.Sym, 2},
+                     nc::Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}},
+                     nr::Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}})
+    
+
+    pxc = size(Mx, 2)
+    pxr = size(Mx, 1)
+
+    pyc = size(My, 2)
+    pyr = size(My, 1)
+
+    pzc = size(Mz, 2)
+    pzr = size(Mz, 1)
+
+    pc = pxc * pyc * pzc
+    pr = pxr * pyr * pzr
+    
+    M = Array{SymPy.Sym}(undef, pr, pc)
+
+    for i = 1:pr
+        for j = 1:pc
+            M[i,j] = Mx[nr[1][i], nc[1][j]] * My[nr[2][i], nc[2][j]] * Mz[nr[3][i], nc[3][j]]
+        end
+    end
+    M
+end
+
+
 end # module
+
