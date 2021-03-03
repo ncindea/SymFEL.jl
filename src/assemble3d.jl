@@ -138,12 +138,12 @@ Assemble a finite elements matrix corresponding to a 3 dimensional cube mesh.
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
 function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                         elements::Array{Int64, 2},
-                                         elements2d::Array{Int64, 2};
-                                         order1 = 1,
-                                         order2 = 1,
-                                         dof1 = 1,
-                                         dof2 = 1)
+                                       elements::Array{Int64, 2},
+                                       elements2d::Array{Int64, 2};
+                                       order1 = 1,
+                                       order2 = 1,
+                                       dof1 = 1,
+                                       dof2 = 1)
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = 4 + (order1 - 1) * (order1 + 3)

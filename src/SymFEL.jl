@@ -200,7 +200,7 @@ end
                 nc::Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1}},
                 nr::Tuple{Array{Int64,1},Array{Int64,1}},Array{Int64,1})
 
-Get elementary matrices for a cube or a paraleliped element.
+Get elementary matrices for a cube or a rectangular hexahedron element.
 
 # Arguments
   * `Mx` : elementary matrix for the x variable.
