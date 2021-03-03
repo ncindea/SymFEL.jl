@@ -137,7 +137,7 @@ Assemble a finite elements matrix corresponding to a 3 dimensional cube mesh.
   * `dof1`     : number of degrees of freedom for each node for lhs
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
-function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
+function assemble1d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
                                          elements::Array{Int64, 2},
                                          elements2d::Array{Int64, 2};
                                          order1 = 1,
