@@ -149,7 +149,7 @@ SymFEL.assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
 
 ```@docs
 SymFEL.assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                   elements::Array{Int64, 2};
+                                   elements::Array{UInt64, 2};
                                    order1 = 1,
                                    order2 = 1,
                                    dof1 = 1,
@@ -158,8 +158,8 @@ SymFEL.assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
 
 ```@docs
 SymFEL.assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-	                               elements::Array{Int64, 2},
-                                   el_labels::Array{Int64, 1};
+	                               elements::Array{UInt64, 2},
+                                   el_labels::Array{UInt64, 1};
                                    order1 = 1,
                                    order2 = 1,
                                    dof1 = 1,
@@ -168,8 +168,8 @@ SymFEL.assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
 
 ```@docs
 SymFEL.assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                     elements::Array{Int64, 2},
-                                     elements2d::Array{Int64, 2};
+                                     elements::Array{UInt64, 2},
+                                     elements2d::Array{UInt64, 2};
                                      order1 = 1,
                                      order2 = 1,
                                      dof1 = 1,
