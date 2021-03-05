@@ -25,8 +25,24 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
-    nodes1 = sort(unique(elements[1:n_order1,:][:]))
-    nodes2 = sort(unique(elements[1:n_order2,:][:]))
+
+    el1 = copy(elements)
+    el2 = copy(elements)
+
+    if n_order1 == 1
+        nodes1 = 1:size(elements, 2)
+        el1[1,:] = nodes1
+    else
+        nodes1 = sort(unique(elements[1:n_order1,:][:]))
+    end
+    if n_order2 == 1
+        nodes2 = 1:size(elements, 2)
+        el2[1,:] = nodes2
+    else
+        nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    end
+    
+   
     nodes1_N = length(nodes1)
     nodes2_N = length(nodes2)
     
@@ -40,8 +56,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     l2 = zeros(Int64, n_order1 * dof1)
     r2 = zeros(Int64, n_order2 * dof2)
     for i = 1:elements_N
-        l = elements[1:n_order1, i]
-        r = elements[1:n_order2, i]
+        l = el1[1:n_order1, i]
+        r = el2[1:n_order2, i]
         l = nodes1_i[l]
         r = nodes2_i[r]
         for j = 1:dof1
@@ -86,8 +102,24 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
-    nodes1 = sort(unique(elements[1:n_order1,:][:]))
-    nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    
+    el1 = copy(elements)
+    el2 = copy(elements)
+
+    if n_order1 == 1
+        nodes1 = 1:size(elements, 2)
+        el1[1,:] = nodes1
+    else
+        nodes1 = sort(unique(elements[1:n_order1,:][:]))
+    end
+    if n_order2 == 1
+        nodes2 = 1:size(elements, 2)
+        el2[1,:] = nodes2
+    else
+        nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    end
+    
+    
     nodes1_N = length(nodes1)
     nodes2_N = length(nodes2)
     
@@ -102,8 +134,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     l2 = zeros(Int64, n_order1 * dof1)
     r2 = zeros(Int64, n_order2 * dof2)
     for i = 1:labels_N
-        l = elements[1:n_order1, el_labels[i]]
-        r = elements[1:n_order2, el_labels[i]]
+        l = el1[1:n_order1, el_labels[i]]
+        r = el2[1:n_order2, el_labels[i]]
         l = nodes1_i[l]
         r = nodes2_i[r]
         for j = 1:dof1
@@ -159,8 +191,8 @@ function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     r2 = zeros(Int64, n_order2 * dof2)
     l2 = zeros(Int64, n_order2 * dof2)
     for i = 1:elements2d_N
-        l = elements1d[1:n_order2, i]
-        r = elements1d[1:n_order2, i]
+        l = elements2d[1:n_order2, i]
+        r = elements2d[1:n_order2, i]
         
         
         for j = 1:dof2
