@@ -50,8 +50,8 @@ elem_M = SymFEL.get_lagrange_em(1, 0, 0);
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
+M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
 
 F = M * f;
 nothing #hide
@@ -106,8 +106,8 @@ for N = NV
     elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
     elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-    K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-    M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+    K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
+    M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
 
     F = M * f;
 
@@ -190,8 +190,8 @@ elem_M = SymFEL.get_em(3, 1, 0, 0; fe1="Hermite", fe2="Lagrange")
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=2, dof2=2);
-M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=2, dof2=1);
+K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes1=0, intNodes2=0, dof1=2, dof2=2);
+M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes1=0, intNodes2=0, dof1=2, dof2=1);
 
 # f is approached by an P1 function
 F = M * f;

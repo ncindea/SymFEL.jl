@@ -7,7 +7,8 @@ makedocs(
     pages=[
         "Home" => "index.md",
         "One dimensional examples" => "examples1.md",
-        "Two dimensional examples" => "examples2.md"
+        "Two dimensional examples" => "examples2.md",
+        "Three dimensional examples" => "examples3.md"
         ]
     )
 

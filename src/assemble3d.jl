@@ -2,7 +2,7 @@ using SparseArrays
 
 """
     assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                elements::Array{Int64, 2};
+                                elements::Array{UInt64, 2};
                                 order1 = 1, order2 = 1,
                                 dof1 = 1, dof2 = 1)
 
@@ -17,7 +17,7 @@ Assemble a finite elements matrix corresponding to a 3 dimensional cube mesh.
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
 function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                     elements::Array{Int64, 2};
+                                     elements::Array{UInt64, 2};
                                      order1 = 1,
                                      order2 = 1,
                                      dof1 = 1,
@@ -25,8 +25,24 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
-    nodes1 = sort(unique(elements[1:n_order1,:][:]))
-    nodes2 = sort(unique(elements[1:n_order2,:][:]))
+
+    el1 = copy(elements)
+    el2 = copy(elements)
+
+    if n_order1 == 1
+        nodes1 = 1:size(elements, 2)
+        el1[1,:] = nodes1
+    else
+        nodes1 = sort(unique(elements[1:n_order1,:][:]))
+    end
+    if n_order2 == 1
+        nodes2 = 1:size(elements, 2)
+        el2[1,:] = nodes2
+    else
+        nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    end
+    
+   
     nodes1_N = length(nodes1)
     nodes2_N = length(nodes2)
     
@@ -40,8 +56,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     l2 = zeros(Int64, n_order1 * dof1)
     r2 = zeros(Int64, n_order2 * dof2)
     for i = 1:elements_N
-        l = elements[1:n_order1, i]
-        r = elements[1:n_order2, i]
+        l = el1[1:n_order1, i]
+        r = el2[1:n_order2, i]
         l = nodes1_i[l]
         r = nodes2_i[r]
         for j = 1:dof1
@@ -58,8 +74,8 @@ end
 
 """
     assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                  elements::Array{Int64, 2},
-                                  el_labels::Array{Int64, 1};
+                                  elements::Array{UInt64, 2},
+                                  el_labels::Array{UInt64, 1};
                                   order1 = 1, 
                                   order2 = 1,
                                   dof1 = 1, 
@@ -77,8 +93,8 @@ Assemble a finite elements matrix corresponding to a 3 dimensional cube mesh.
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
 function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                     elements::Array{Int64, 2},
-                                     el_labels::Array{Int64, 1};
+                                     elements::Array{UInt64, 2},
+                                     el_labels::Array{UInt64, 1};
                                      order1 = 1,
                                      order2 = 1,
                                      dof1 = 1,
@@ -86,8 +102,24 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
-    nodes1 = sort(unique(elements[1:n_order1,:][:]))
-    nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    
+    el1 = copy(elements)
+    el2 = copy(elements)
+
+    if n_order1 == 1
+        nodes1 = 1:size(elements, 2)
+        el1[1,:] = nodes1
+    else
+        nodes1 = sort(unique(elements[1:n_order1,:][:]))
+    end
+    if n_order2 == 1
+        nodes2 = 1:size(elements, 2)
+        el2[1,:] = nodes2
+    else
+        nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    end
+    
+    
     nodes1_N = length(nodes1)
     nodes2_N = length(nodes2)
     
@@ -102,8 +134,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     l2 = zeros(Int64, n_order1 * dof1)
     r2 = zeros(Int64, n_order2 * dof2)
     for i = 1:labels_N
-        l = elements[1:n_order1, el_labels[i]]
-        r = elements[1:n_order2, el_labels[i]]
+        l = el1[1:n_order1, el_labels[i]]
+        r = el2[1:n_order2, el_labels[i]]
         l = nodes1_i[l]
         r = nodes2_i[r]
         for j = 1:dof1
@@ -119,8 +151,8 @@ end
 
 """
     assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
-                                  elements::Array{Int64, 2},
-                                  el_labels::Array{Int64, 1};
+                                  elements::Array{UInt64, 2},
+                                  el_labels::Array{UInt64, 1};
                                   order1 = 1, 
                                   order2 = 1,
                                   dof1 = 1, 
@@ -137,13 +169,13 @@ Assemble a finite elements matrix corresponding to a 3 dimensional cube mesh.
   * `dof1`     : number of degrees of freedom for each node for lhs
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
-function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
-                                         elements::Array{Int64, 2},
-                                         elements2d::Array{Int64, 2};
-                                         order1 = 1,
-                                         order2 = 1,
-                                         dof1 = 1,
-                                         dof2 = 1)
+function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
+                                       elements::Array{UInt64, 2},
+                                       elements2d::Array{UInt64, 2};
+                                       order1 = 1,
+                                       order2 = 1,
+                                       dof1 = 1,
+                                       dof2 = 1)
     
     n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
     n_order2 = 4 + (order1 - 1) * (order1 + 3)
@@ -159,8 +191,8 @@ function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
     r2 = zeros(Int64, n_order2 * dof2)
     l2 = zeros(Int64, n_order2 * dof2)
     for i = 1:elements2d_N
-        l = elements1d[1:n_order2, i]
-        r = elements1d[1:n_order2, i]
+        l = elements2d[1:n_order2, i]
+        r = elements2d[1:n_order2, i]
         
         
         for j = 1:dof2
