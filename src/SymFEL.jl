@@ -2,7 +2,7 @@
 # See accompanying license file.
 
 module SymFEL
-__precompile__(false)
+#__precompile__(false)
 
 using SymPy
 
@@ -15,89 +15,92 @@ include("assemble2d.jl")
 include("assemble3d.jl")
 
 
-export x
-export y
-export z
-export h
-export hx
-export hy
-export hz
-export xa, xb
+# export x
+# export y
+# export z
+# export h
+# export hx
+# export hy
+# export hz
+# export xa, xb
 
-"""
-    x = SymPy.symbols("x")
+# """
+#     x = SymPy.symbols("x")
 
-Symbolic variable x.
+# Symbolic variable x.
 
-This variable is exported.
-"""
-x = SymPy.symbols("x")
+# This variable is exported.
+# """
+# x = SymPy.symbols("x")
 
-"""
-    y = SymPy.symbols("y")
+# """
+#     y = SymPy.symbols("y")
 
-Symbolic variable y.
+# Symbolic variable y.
 
-This variable is exported.
-"""
-y = SymPy.symbols("y")
+# This variable is exported.
+# """
+# y = SymPy.symbols("y")
 
-"""
-    z = SymPy.symbols("z")
+# """
+#     z = SymPy.symbols("z")
 
-Symbolic variable z.
+# Symbolic variable z.
 
-This variable is exported.
-"""
-z = SymPy.symbols("z")
+# This variable is exported.
+# """
+# z = SymPy.symbols("z")
 
-"""
-    h = SymPy.symbols("h")
+# """
+#     h = SymPy.symbols("h")
 
-Symbolic variable h.
+# Symbolic variable h.
 
-This variable is exported.
-"""
-h = SymPy.symbols("h")
+# This variable is exported.
+# """
+# h = SymPy.symbols("h")
 
-"""
-    hx = SymPy.symbols("hx")
+# """
+#     hx = SymPy.symbols("hx")
 
-Symbolic variable h.
+# Symbolic variable h.
 
-This variable is exported.
-"""
-hx = SymPy.symbols("hx")
+# This variable is exported.
+# """
+# hx = SymPy.symbols("hx")
 
-"""
-    hy = SymPy.symbols("hy")
+# """
+#     hy = SymPy.symbols("hy")
 
-Symbolic variable hy.
+# Symbolic variable hy.
 
-This variable is exported.
-"""
-hy = SymPy.symbols("hy")
-
-
-"""
-    hz = SymPy.symbols("hz")
-
-Symbolic variable hz.
-
-This variable is exported.
-"""
-hz = SymPy.symbols("hz")
+# This variable is exported.
+# """
+# hy = SymPy.symbols("hy")
 
 
+# """
+#     hz = SymPy.symbols("hz")
 
-"""
-    xa, xb = SymPy.symbols("xa xb")
+# Symbolic variable hz.
 
-Symbolic vaiables xa and xb.
+# This variable is exported.
+# """
+# hz = SymPy.symbols("hz")
 
-This variables are used for variable coefficients problems. This variables are exported.
-"""
-xa, xb = SymPy.symbols("xa xb")
+
+
+# """
+#     xa, xb = SymPy.symbols("xa xb")
+
+# Symbolic vaiables xa and xb.
+
+# This variables are used for variable coefficients problems. This variables are exported.
+# """
+# xa, xb = SymPy.symbols("xa xb")
+
+export define_symbols
+const define_symbols = :(SymPy.@vars x y z h hx hy hz xa xb)
 
 """
     get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
@@ -107,8 +110,7 @@ Gives 1d elementary matrices for Lagrange and Hermite elements.
 The elementary matrices are computed for elements of length `h`.
 """
 function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
-    global x
-    global h
+    eval(define_symbols)
     if fe1 == "Lagrange"
         if der1 ∈ collect(0:deg1)
             p1 = get_lagrange_basis(deg1)

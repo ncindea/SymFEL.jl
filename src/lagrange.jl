@@ -6,8 +6,7 @@ using LinearAlgebra
     """
 function get_lagrange_basis(n = 1, varcoeff = false)
     # option varcoeff is not used actually
-    global x
-    global h
+    eval(define_symbols)
     E = Matrix(1I, n+1, n+1)
     symString = ""
     for i = 1:n
@@ -66,8 +65,7 @@ Get Lagrange finite elements elementary matrices.
   * `n`: number of derivatives on the second function.
 """
 function get_lagrange_em(p = 1, m = 0, n = 0)
-    global x
-    global h
+    eval(define_symbols)
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     F = get_lagrange_basis(p)
     for i = 1:p+1
@@ -92,10 +90,7 @@ Get Hermite finite elements elementary matrices for variable coefficients.
 function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
     # does not work properly
     # TODO: fix it
-    global x
-    global h
-    global xa
-    global xb
+    eval(define_symbols)
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     F = get_lagrange_basis(p, true)
     for i = 1:p+1

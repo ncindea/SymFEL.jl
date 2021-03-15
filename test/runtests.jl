@@ -4,6 +4,7 @@ using SymPy
 using LinearAlgebra
 
 
+eval(SymFEL.define_symbols)
 # Testing Lagrange elements
 println("# Testing Lagrange elements")
 p1 = SymFEL.get_lagrange_basis()
@@ -68,8 +69,8 @@ MHVC = MHVC.subs([(xa, 0), (xb, h)])
 
 try
     SymFEL.get_hermite_basis(2)
-catch y
-    println(y)
+catch yy
+    println(yy)
 end
 
 ##

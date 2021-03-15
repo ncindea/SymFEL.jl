@@ -58,7 +58,7 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
 """
 function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
                                   intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
-    global h  
+    eval(define_symbols) 
     nbNodes = length(nodes)
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
