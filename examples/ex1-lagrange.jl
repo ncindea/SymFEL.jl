@@ -30,8 +30,8 @@ elem_M = SymFEL.get_lagrange_em(1, 0, 0);
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
+M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
 
 F = M * f;
 
@@ -61,33 +61,33 @@ EH1 = zeros(11)
 i = 1
 for N = NV
     global i
-    dx = 1 / (N - 1); # discretization step
-    nodes = range(0, stop=1, length=N);
-    bound_nodes = [1, N];
+    local dx = 1 / (N - 1); # discretization step
+    local nodes = range(0, stop=1, length=N);
+    local bound_nodes = [1, N];
 
     # exact solution
-    u_exact = nodes .* sin.(pi * nodes);
+    local u_exact = nodes .* sin.(pi * nodes);
     # right hand 
-    f = (1 + pi^2) * nodes .* sin.(pi * nodes) - 2 * pi * cos.(pi * nodes);
+    local f = (1 + pi^2) * nodes .* sin.(pi * nodes) - 2 * pi * cos.(pi * nodes);
 
-    elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
-    elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
+    local elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
+    local elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 
-    K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes=0, dof1=1, dof2=1);
-    M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes=0, dof1=1, dof2=1);
+    local K = SymFEL.assemble_1d_FE_matrix(elem_K_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
+    local M = SymFEL.assemble_1d_FE_matrix(elem_M_dx, N, intNodes1=0, intNodes2=0, dof1=1, dof2=1);
 
-    F = M * f;
+    local F = M * f;
 
     # boundary conditions
-    tgv = 1e100
-    A = K + M
+    local tgv = 1e100
+    local A = K + M
     A[bound_nodes, bound_nodes] += tgv*sparse(Matrix{Float64}(I, 2, 2));
 
     F[bound_nodes] = zeros(2);
 
-    u = A \ F;
+    local u = A \ F;
 
-    err = u - u_exact;
+    local err = u - u_exact;
 
     EL2[i] = sqrt(err' * M * err)
     EH1[i] = sqrt(err' * K * err)
@@ -101,3 +101,4 @@ loglog(1 ./ NV, EH1)
 loglog(1 ./ NV, (1 ./ NV).^2)
 xlabel(L"$\Delta x$")
 legend(["L2 Error", "H1 Error", L"$\Delta x^2$"])
+show()
