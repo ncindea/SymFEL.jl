@@ -50,7 +50,7 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
 
     elements_N = size(elements, 2)
     MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
-    ll2 = 
+
     for i = 1:nT
         MM[i] = spzeros(Float64, nodes1_N * dof1, nodes2_N * dof2)
     end
@@ -64,10 +64,10 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     Threads.@threads for i = 1:elements_N
         k = Threads.threadid()
         for j = 1:dof1
-            l2[v1  .+ j, k] = @. dof1 * (el1[1:n_order1, i] - 1)  + j
+            l2[v1  .+ j, k] = @. dof1 * (el1[1:n_order1, i] - 1) + j
         end
         for j = 1:dof2
-            r2[v2  .+ j, k] = @. dof2 * (el2[1:n_order2, i] - 1)  + j
+            r2[v2  .+ j, k] = @. dof2 * (el2[1:n_order2, i] - 1) + j
         end
         
         MM[k][l2[:,k], r2[:,k]] += el_mat
@@ -137,7 +137,7 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     labels_N = length(el_labels)
 
     MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
-    ll2 = 
+
     for i = 1:nT
         MM[i] = spzeros(Float64, nodes1_N * dof1, nodes2_N * dof2)
     end
@@ -153,10 +153,10 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
         k = Threads.threadid()
 
         for j = 1:dof1
-            l2[v1 .+ j, k] = @. dof1 * (el1[1:n_order1, el_labels[i]] - 1)  + j
+            l2[v1 .+ j, k] = @. dof1 * (el1[1:n_order1, el_labels[i]] - 1) + j
         end
         for j = 1:dof2
-            r2[v2 .+ j, k] = @. dof2 * (el2[1:n_order2, el_labels[i]] - 1)  + j
+            r2[v2 .+ j, k] = @. dof2 * (el2[1:n_order2, el_labels[i]] - 1) + j
         end
         MM[k][l2[:, k], r2[:, k]] +=  el_mat
     end
@@ -207,7 +207,7 @@ function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
 
     elements2d_N = size(elements2d, 2)
     MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
-    ll2 = 
+
     for i = 1:nT
         MM[i] = spzeros(Float64, nodes_N * dof1, nodes_N * dof2)
     end
@@ -221,10 +221,10 @@ function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
         k = Threads.threadid()
         
         for j = 1:dof2
-            l2[v1 .+ j, k] = @. dof1 * (elements2d[1:n_order2, i] - 1)  + j
+            l2[v1 .+ j, k] = @. dof1 * (elements2d[1:n_order2, i] - 1) + j
         end
         for j = 1:dof2
-            r2[v2 .+ j, k] = @. dof2 * (elements2d[1:n_order2, i] - 1)  + j
+            r2[v2 .+ j, k] = @. dof2 * (elements2d[1:n_order2, i] - 1) + j
         end
         MM[k][l2[:, k], r2[:, k]] +=  el_mat
     end

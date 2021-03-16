@@ -28,16 +28,34 @@ Assemble a finite elements matrix corresponding to a 1 dimensional uniform mesh.
 function assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
                                intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
 
+    nT = Threads.nthreads()
+    
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
 
-    M = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
-    for i = 1:nbNodes - 1
-        l1 = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
-        r1 = (i + 1 + i * intNodes1) * dof1
-        l2 = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
-        r2 = (i + 1 + i * intNodes2) * dof2
-        M[l1:r1, l2:r2] = M[l1:r1, l2:r2] + elem
+    MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
+    for i = 1:nT
+        MM[i] = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
+    end
+
+    l1 = zeros(UInt64, nT)
+    r1 = zeros(UInt64, nT)
+    l2 = zeros(UInt64, nT)
+    r2 = zeros(UInt64, nT)
+    
+
+    Threads.@threads for i = 1:(nbNodes - 1)
+        k = Threads.threadid()
+        
+        l1[k] = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
+        r1[k] = (i + 1 + i * intNodes1) * dof1
+        l2[k] = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
+        r2[k] = (i + 1 + i * intNodes2) * dof2
+        MM[k][l1[k]:r1[k], l2[k]:r2[k]] += elem
+    end
+    M = MM[1]
+    for i=2:nT
+        M += MM[i]
     end
     M
 end
@@ -58,19 +76,34 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
 """
 function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
                                   intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
+
+    nT = Threads.nthreads()
     global h  
     nbNodes = length(nodes)
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
 
-    M = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
-    for i = 1:nbNodes - 1
-        l1 = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
-        r1 = (i + 1 + i * intNodes1) * dof1
-        l2 = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
-        r2 = (i + 1 + i * intNodes2) * dof2
+    MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
+    for i = 1:nT
+        MM[i] = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
+    end
+
+    l1 = zeros(UInt64, nT)
+    r1 = zeros(UInt64, nT)
+    l2 = zeros(UInt64, nT)
+    r2 = zeros(UInt64, nT)
+    Threads.@threads for i = 1:nbNodes - 1
+        k = Threads.threadid()
+        l1[k] = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
+        r1[k] = (i + 1 + i * intNodes1) * dof1
+        l2[k] = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
+        r2[k] = (i + 1 + i * intNodes2) * dof2
         elem_loc = elem.subs(h, nodes[i + 1] - nodes[i])
-        M[l1:r1, l2:r2] = M[l1:r1, l2:r2] + elem_loc
+        MM[k][l1[k]:r1[k], l2[k]:r2[k]] += elem_loc
+    end
+    M = MM[1]
+    for i=2:nT
+        M += MM[i]
     end
     M
 end

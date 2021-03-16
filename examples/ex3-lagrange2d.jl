@@ -5,40 +5,21 @@
 # -\Delta u + u = f in \Omega
 # u = 0 on \Gamma
 
-using Revise
 using SymFEL
 using SymPy
 using LinearAlgebra
 using SparseArrays
-import gmsh
 using WriteVTK
+using JLD2
 
 ## discretization parameters
 # we use the mesh square.msh (in gmsh format)
 # obtained from square.geo using gmsh
 # this mesh is formed by quad elements
 # we use gmsh module for read the mesh
-gmsh.initialize()
-gmsh.open("square.msh")
-nodes = gmsh.model.mesh.getNodes()
-nodes_label = convert(Array{Int64}, nodes[1])
-nodes_N = length(nodes_label)
-nodes_coordinate = reshape(nodes[2], (3, nodes_N))
-nodes_boundary = convert(Array{Int64}, unique(gmsh.model.mesh.getNodesByElementType(1)[1]))
-nodes_boundary_N = length(nodes_boundary)
-
-elements = gmsh.model.mesh.getElements()
-
-elements_bound_label = convert(Array{Int64}, elements[2][1])
-elements_bound_N = length(elements_bound_label)
-
-elements_int_label = convert(Array{Int64}, elements[2][2])
-elements_int_N = length(elements_int_label)
-
-elements_bound = reshape(convert(Array{Int64}, elements[3][1]), (3, elements_bound_N))
-elements_int = reshape(convert(Array{Int64}, elements[3][2]), (9, elements_int_N))
-#gmsh.fltk.run()
-gmsh.finalize()
+# there are some problems using Threads and gmsh (in linux)
+# the file is square.jld2 is prepared separetely
+@load "square.jld2"
 
 # elementary matrices - P2 x P2
 elem_Mxy = SymFEL.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
