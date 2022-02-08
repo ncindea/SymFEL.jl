@@ -180,6 +180,18 @@ xr[2*(i .- 1) .+ 1] = xvr2
 xr[2*(i .- 1) .+ 2] = ones(n)
 
 @test abs((xv' * M * xr)[1] - 4 / 5) < 1e-14
+
+n = 1001
+f = SymFEL.x^2
+elem_M_x = SymFEL.get_lagrange_em_varcoeff(1, 0, 0, f)
+nodes = range(0, stop=1, length=n)
+nodes = convert(Vector{Float64}, nodes)
+M = SymFEL.assemble_1d_nu_FE_matrix_varcoeff(elem_M_x, nodes)
+vec = ones(n)
+III = vec' * M * vec
+
+@test abs(III - 1/3) < 1e-2
+
 println("All tests passed.")
 
 
