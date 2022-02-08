@@ -27,6 +27,12 @@ M = SymFEL.get_lagrange_em()
 @test (M[1, 1] == h / 3) && ((M[1, 2] == h / 6)) &&
     (M[2, 1] == h / 6) && ((M[2, 2] == h / 3))
 
+f = convert(Sym, 1)
+MNU = SymFEL.get_lagrange_em_varcoeff(1, 0, 0, f)
+MNU = MNU.subs([(xa, 0), (xb, h)])
+@test (MNU[1, 1] == h / 3) && ((MNU[1, 2] == h / 6)) &&
+    (MNU[2, 1] == h / 6) && ((MNU[2, 2] == h / 3))
+
 MVC = SymFEL.get_lagrange_em_varcoeff()
 MVC = MVC.subs([(xa, 0), (xb, h)])
 @test (MVC[1, 1] == h / 3) && (MVC[1, 2] == h / 6) &&
