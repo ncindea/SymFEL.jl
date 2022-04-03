@@ -90,17 +90,16 @@ Get Hermite finite elements elementary matrices for variable coefficients.
 * `f`: the variable coefficient.
 """
 function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
-    # does not work properly
-    # TODO: fix it
     global x
     global h
     global xa
     global xb
     M = Array{SymPy.Sym}(undef, p+1, p+1)
+    ff = subs(f, x, xa + (xb - xa) / h * x)
     F = get_lagrange_basis(p, true)
     for i = 1:p+1
         for j = 1:p+1
-            M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n) * f, (x, xa, xb)))
+            M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n) * ff * (xb - xa) / h, (x, 0, h)))
             M[i, j] = simplify(subs(M[i, j], h, xb - xa))
         end
     end
