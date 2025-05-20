@@ -25,8 +25,8 @@ function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
 
     nT = Threads.nthreads()
     
-    n_order1 = 4 + (order1 - 1) * (order1 + 3)
-    n_order2 = 4 + (order2 - 1) * (order2 + 3)
+    n_order1 = (order1 + 1)^2
+    n_order2 = (order2 + 1)^2
 
     el1 = copy(elements)
     el2 = copy(elements)
@@ -106,8 +106,8 @@ function assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
                                        dof2 = 1)
 
     nT = Threads.nthreads()
-    n_order1 = 4 + (order1 - 1) * (order1 + 3)
-    n_order2 = 4 + (order2 - 1) * (order2 + 3)
+    n_order1 = (order1 + 1)^2
+    n_order2 = (order2 + 1)^2
 
     el1 = copy(elements)
     el2 = copy(elements)
