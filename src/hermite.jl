@@ -1,12 +1,12 @@
 using LinearAlgebra
 """
-    get_hermite_basis(n = 3, varcoeff = false)
+    get_hermite_basis(n = 3, varcoeff = false;
+                      x=symbols("x"), h=symbols("h"))
 
 Get Hermite basis function of order `n`.
 """
-function get_hermite_basis(n = 3, varcoeff = false)
-    global x
-    global h
+function get_hermite_basis(n = 3, varcoeff = false;
+                           x=symbols("x"), h=symbols("h"))
     xa = SymPy.symbols("xa")
     xb = SymPy.symbols("xb")
     if (n < 3) || (n % 2 != 1)
@@ -64,7 +64,8 @@ end
 
 
 """
-    get_hermite_em(p = 3, m = 0, n = 0)
+    get_hermite_em(p = 3, m = 0, n = 0;
+                   x=symbols("x"), h=symbols("h"))
 
 Get Hermite finite elements elementary matrices.
 
@@ -73,9 +74,8 @@ Get Hermite finite elements elementary matrices.
   * `m`: number of derivatives on the first function.
   * `n`: number of derivatives on the second function.
 """
-function get_hermite_em(p = 3, m = 0, n = 0)
-    global x
-    global h
+function get_hermite_em(p = 3, m = 0, n = 0;
+                        x=symbols("x"), h=symbols("h"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     F = get_hermite_basis(p)
     for i = 1:p+1
@@ -87,7 +87,8 @@ function get_hermite_em(p = 3, m = 0, n = 0)
 end
 
 """
-    get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
+    get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1;
+                            x=symbols("x"), h=symbols("h"))
     Get Hermite finite elements elementary matrices for variable coefficients.
 
 # Arguments
@@ -96,9 +97,8 @@ end
   * `n`: number of derivatives on the second function.
   * `f`: the variable coefficient.
 """
-function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
-    global x
-    global h
+function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1;
+                                 x=symbols("x"), h=symbols("h"))
     xa = SymPy.symbols("xa")
     xb = SymPy.symbols("xb")
     M = Array{SymPy.Sym}(undef, p+1, p+1)
@@ -113,7 +113,8 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1)
 end
 
 """
-    get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0);
+                          x=symbols("x"), h=symbols("h"))
 
 Get Hermite finite elements elementary matrices for a squared element.
 
@@ -123,7 +124,10 @@ Get Hermite finite elements elementary matrices for a squared element.
   * `(nx, ny)` : number of derivatives on the second function wrt x and y
 
 """
-function get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+function get_square_hermite_em((px, py) = (3, 3),
+                               (mx, my) = (0, 0),
+                               (nx, ny) = (0, 0);
+                               x=symbols("x"), h=symbols("h"))
     Mx = get_hermite_em(px, mx, nx)
     My = get_hermite_em(py, my, ny)
 
@@ -146,7 +150,8 @@ end
 
 
 """
-    interpolate(fd::Matrix{Float64}, t::Vector{Float64}, ti::Vector{Float64})
+    interpolate(fd::Matrix{Float64}, t::Vector{Float64}, ti::Vector{Float64};
+                x=symbols("x"), h=symbols("h"))
 
 Interpolates `fd` from `t` to `ti`.
 
@@ -155,9 +160,8 @@ Interpolates `fd` from `t` to `ti`.
   * `t`: values in which `fd` is known.
   * `ti`: values in which `fd` is interpolated.
 """
-function interpolate(fd, t, ti)
-    global x
-    global h
+function interpolate(fd, t, ti;
+                     x=symbols("x"), h=symbols("h"))
     p = size(fd, 1) # 2*p -1 is the degree of polynomials
     n = size(fd, 2) # number of samples
     if (n != length(t))

@@ -2,11 +2,9 @@
 # See accompanying license file.
 
 module SymFEL
-__precompile__(false)
+
 
 using SymPy
-
-# polynomial variable
 
 include("lagrange.jl")
 include("hermite.jl")
@@ -15,100 +13,18 @@ include("assemble2d.jl")
 include("assemble3d.jl")
 
 
-export x
-export y
-export z
-export h
-export hx
-export hy
-export hz
-export xa, xb
-
 """
-    x = SymPy.symbols("x")
-
-Symbolic variable x.
-
-This variable is exported.
-"""
-x = SymPy.symbols("x")
-
-"""
-    y = SymPy.symbols("y")
-
-Symbolic variable y.
-
-This variable is exported.
-"""
-y = SymPy.symbols("y")
-
-"""
-    z = SymPy.symbols("z")
-
-Symbolic variable z.
-
-This variable is exported.
-"""
-z = SymPy.symbols("z")
-
-"""
-    h = SymPy.symbols("h")
-
-Symbolic variable h.
-
-This variable is exported.
-"""
-h = SymPy.symbols("h")
-
-"""
-    hx = SymPy.symbols("hx")
-
-Symbolic variable h.
-
-This variable is exported.
-"""
-hx = SymPy.symbols("hx")
-
-"""
-    hy = SymPy.symbols("hy")
-
-Symbolic variable hy.
-
-This variable is exported.
-"""
-hy = SymPy.symbols("hy")
-
-
-"""
-    hz = SymPy.symbols("hz")
-
-Symbolic variable hz.
-
-This variable is exported.
-"""
-hz = SymPy.symbols("hz")
-
-
-
-"""
-    xa, xb = SymPy.symbols("xa xb")
-
-Symbolic vaiables xa and xb.
-
-This variables are used for variable coefficients problems. This variables are exported.
-"""
-xa, xb = SymPy.symbols("xa xb")
-
-"""
-    get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
+    get_em(deg1=1, deg2=1, der1=0, der2=0;
+           fe1="Lagrange", fe2="Lagrange",
+           x=symbols("x"), h=symbols("h"))
 
 Gives 1d elementary matrices for Lagrange and Hermite elements.
 
 The elementary matrices are computed for elements of length `h`.
 """
-function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
-    global x
-    global h
+function get_em(deg1=1, deg2=1, der1=0, der2=0;
+                fe1="Lagrange", fe2="Lagrange",
+                x=symbols("x"), h=symbols("h"))
     if fe1 == "Lagrange"
         if der1 ∈ collect(0:deg1)
             p1 = get_lagrange_basis(deg1)
@@ -153,17 +69,19 @@ function get_em(deg1=1, deg2=1, der1=0, der2=0; fe1="Lagrange", fe2="Lagrange")
 end
 
 """
-    get_etensor(deg1=1, deg2=1, deg=1, der1=0, der2=0, der3=0; fe1="Lagrange", fe2="Lagrange", fe3="Lagrange")
+    get_etensor(deg1=1, deg2=1, deg=1, der1=0, der2=0, der3=0;
+                fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                x=symbols("x"), h=symbols("h"))
 
 Gives 1d elementary tensors for Lagrange and Hermite elements.
 
-This is used, in particular, for $∫ a(x) u(x) ϕ(x) dx$.
+This is used, in particular, for ∫ a(x) u(x) ϕ(x) dx.
 
 The elementary matrices are computed for elements of length `h`.
 """
-function get_etensor(deg1=1, deg2=1, deg3=1, der1=0, der2=0, der3=0; fe1="Lagrange", fe2="Lagrange", fe3="Lagrange")
-    global x
-    global h
+function get_etensor(deg1=1, deg2=1, deg3=1, der1=0, der2=0, der3=0;
+                     fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                     x=symbols("x"), h=symbols("h"))
     if fe1 == "Lagrange"
         if der1 ∈ collect(0:deg1)
             p1 = get_lagrange_basis(deg1)
@@ -310,6 +228,55 @@ function get_cube_em(Mx::Array{SymPy.Sym, 2},
     end
     M
 end
+
+"""
+    get_square_etensor(Tx::Array{SymPy.Sym, 3},
+                       Ty::Array{SymPy.Sym, 3},
+                       nc::Tuple{Array{Int64,1},Array{Int64,1}},
+                       nr::Tuple{Array{Int64,1},Array{Int64,1}},
+                       np::Tuple{Array{Int64,1},Array{Int64,1}})
+
+Get elementary matrices for a squared or a rectangular element.
+
+# Arguments
+  * `Tx` : elementary tensor for the x variable.
+  * `Ty` : elementary tensor for the y variable
+  * `nc` : order of nodes for column
+  * `nr` : order of nodes for row
+  * `np` : order of nodes for depth
+
+"""
+function get_square_etensor(Tx::Array{SymPy.Sym, 3},
+                            Ty::Array{SymPy.Sym, 3},
+                            nc::Tuple{Array{Int64,1},Array{Int64,1}},
+                            nr::Tuple{Array{Int64,1},Array{Int64,1}},
+                            np::Tuple{Array{Int64,1},Array{Int64,1}}
+                            )
+    
+    pxp = size(Tx, 3)
+    pxc = size(Tx, 2)
+    pxr = size(Tx, 1)
+
+    pyp = size(Ty, 3)
+    pyc = size(Ty, 2)
+    pyr = size(Ty, 1)
+
+    pp = pxp * pyp
+    pc = pxc * pyc
+    pr = pxr * pyr
+    
+    T = Array{SymPy.Sym}(undef, pr, pc, pp)
+
+    for i = 1:pr
+        for j = 1:pc
+            for k = 1:pp
+                T[i, j, k] = Tx[nr[1][i], nc[1][j], np[1][k]] * Ty[nr[2][i], nc[2][j], np[2][k]]
+            end
+        end
+    end
+    T
+end
+
 
 
 end # module

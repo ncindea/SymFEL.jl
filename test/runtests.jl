@@ -4,6 +4,8 @@ using SymPy
 using LinearAlgebra
 
 
+x, h, xa, xb = symbols("x h xa xb")
+
 # Testing Lagrange elements
 println("# Testing Lagrange elements")
 p1 = SymFEL.get_lagrange_basis()
@@ -182,7 +184,7 @@ xr[2*(i .- 1) .+ 2] = ones(n)
 @test abs((xv' * M * xr)[1] - 4 / 5) < 1e-14
 
 n = 1001
-f = SymFEL.x^2
+f = x^2
 elem_M_x = SymFEL.get_lagrange_em_varcoeff(1, 0, 0, f)
 nodes = range(0, stop=1, length=n)
 nodes = convert(Vector{Float64}, nodes)
@@ -191,7 +193,7 @@ vec = ones(n)
 III = vec' * M * vec
 
 @test abs(III - 1/3) < 1e-2
-
+include("test-mult-coeff-1d.jl")
 println("All tests passed.")
 
 

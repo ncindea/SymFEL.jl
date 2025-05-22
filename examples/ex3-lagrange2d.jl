@@ -21,6 +21,8 @@ using JLD2
 # the file is square.jld2 is prepared separetely
 @load "square.jld2"
 
+x, h, xa, xb = symbols("x h xa xb")
+
 # elementary matrices - P2 x P2
 elem_Mxy = SymFEL.get_square_lagrange_em((2, 2), (0, 0), (0, 0))
 elem_Kxy = SymFEL.get_square_lagrange_em((2, 2), (1, 0), (1, 0)) +

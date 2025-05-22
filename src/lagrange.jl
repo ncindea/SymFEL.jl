@@ -1,13 +1,12 @@
 using LinearAlgebra
 """
-        get_lagrange_basis(n = 1, varcoeff = false)
+        get_lagrange_basis(n = 1, varcoeff = false;
+                           x = symbols("x"), h = symbols("h"))
 
     Get Lagrange basis function of order `n`.
     """
-function get_lagrange_basis(n = 1, varcoeff = false)
-    # option varcoeff is not used actually
-    global x
-    global h
+function get_lagrange_basis(n = 1, varcoeff = false;
+                            x = symbols("x"), h = symbols("h"))
     E = Matrix(1I, n+1, n+1)
     symString = ""
     for i = 1:n
@@ -56,7 +55,8 @@ function get_lagrange_basis(n = 1, varcoeff = false)
 end
 
 """
-    get_lagrange_em(p = 1, m = 0, n = 0)
+    get_lagrange_em(p = 1, m = 0, n = 0;
+                    x = symbols("x"), h = symbols("h"))
 
 Get Lagrange finite elements elementary matrices.
 
@@ -65,9 +65,8 @@ Get Lagrange finite elements elementary matrices.
   * `m`: number of derivatives on the first function.
   * `n`: number of derivatives on the second function.
 """
-function get_lagrange_em(p = 1, m = 0, n = 0)
-    global x
-    global h
+function get_lagrange_em(p = 1, m = 0, n = 0;
+                         x = symbols("x"), h = symbols("h"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     F = get_lagrange_basis(p)
     for i = 1:p+1
@@ -79,7 +78,9 @@ function get_lagrange_em(p = 1, m = 0, n = 0)
 end
 
 """
-    get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
+    get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
+                             x = symbols("x"), h = symbols("h"),
+                             xa = symbols("xa"), xb = symbols(xb))
 
 Get Hermite finite elements elementary matrices for variable coefficients.
 
@@ -89,11 +90,9 @@ Get Hermite finite elements elementary matrices for variable coefficients.
 * `n`: number of derivatives on the second function.
 * `f`: the variable coefficient.
 """
-function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
-    global x
-    global h
-    global xa
-    global xb
+function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
+                                  x = symbols("x"), h = symbols("h"),
+                                  xa = symbols("xa"), xb = symbols("xb"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     ff = subs(f, x, xa + (xb - xa) / h * x)
     F = get_lagrange_basis(p, true)
@@ -107,7 +106,8 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1)
 end
 
 """
-    get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+    get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0);
+                           x = symbols("x"), h = symbols("h"))
 
 Get Lagrange finite elements elementary matrices for a squared element.
 
@@ -119,7 +119,10 @@ Get Lagrange finite elements elementary matrices for a squared element.
 # Remarks
   The current version works only for px, py in {1, 2}
 """
-function get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0))
+function get_square_lagrange_em((px, py) = (1, 1),
+                                (mx, my) = (0, 0),
+                                (nx, ny) = (0, 0);
+                                x = symbols("x"), h = symbols("h"))
     Mx = get_lagrange_em(px, mx, nx)
     My = get_lagrange_em(py, my, ny)
 

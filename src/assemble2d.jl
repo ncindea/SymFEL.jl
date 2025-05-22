@@ -78,6 +78,111 @@ end
 
 
 """
+    assemble_squaremesh_FE_matrix_coeffmult(el_ten::Array{Float64, 3},
+                                  coeff::Array{Float64, 1}, 
+                                  elements::Array{Int64, 2};
+                                  order1 = 1, order2 = 1, order3 = 1
+                                  dof1 = 1, dof2 = 1, dof3 = 1)
+
+Assemble a finite elements matrix corresponding to a 2 dimensional square mesh.
+
+# Arguments
+  * `el_ten`   : elementary finite elements matrix
+  * `coeff`    : variable coefficient
+  * `elements` : list of elements
+  * `order1`   : order for lhs
+  * `order2`   : order for rhs
+  * `order3`   : order for phs
+  * `dof1`     : number of degrees of freedom for each node for lhs
+  * `dof2`     : number of degrees of freedom for each node for rhs
+  * `dof3`     : number of degrees of freedom for each node for phs
+"""
+function assemble_squaremesh_FE_matrix_coeffmult(el_ten::Array{Float64, 3},
+                                                 coeff::Array{Float64, 1},
+                                                 elements::Array{Int64, 2};
+                                                 order1 = 1,
+                                                 order2 = 1,
+                                                 order3 = 1,
+                                                 dof1 = 1,
+                                                 dof2 = 1,
+                                                 dof3 = 1)
+
+    nT = Threads.nthreads()
+    
+    n_order1 = (order1 + 1)^2
+    n_order2 = (order2 + 1)^2
+    n_order3 = (order3 + 1)^2
+
+    el1 = copy(elements)
+    el2 = copy(elements)
+    el3 = copy(elements)
+
+    if n_order1 == 1
+        nodes1 = 1:size(elements, 2)
+        el1[1,:] = nodes1
+    else
+        nodes1 = sort(unique(elements[1:n_order1,:][:]))
+    end
+    if n_order2 == 1
+        nodes2 = 1:size(elements, 2)
+        el2[1,:] = nodes2
+    else
+        nodes2 = sort(unique(elements[1:n_order2,:][:]))
+    end
+    if n_order3 == 1
+        nodes3 = 1:size(elements, 2)
+        el3[1,:] = nodes3
+    else
+        nodes3 = sort(unique(elements[1:n_order3,:][:]))
+    end
+   
+    nodes1_N = length(nodes1)
+    nodes2_N = length(nodes2)
+    nodes3_N = length(nodes3)
+
+    elements_N = size(elements, 2)
+    MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
+    for i = 1:nT
+        MM[i] = spzeros(Float64, nodes1_N * dof1, nodes2_N * dof2)
+    end
+
+    ls = size(el_ten, 1)
+    rs = size(el_ten, 2)
+    ps = size(el_ten, 3)
+    l1 = zeros(UInt64, n_order1 * dof1, nT)
+    l2 = zeros(UInt64, n_order2 * dof2, nT)
+    l3 = zeros(UInt64, n_order3 * dof3, nT)
+    v1 = @. dof1 * ((1:n_order1) - 1)
+    v2 = @. dof2 * ((1:n_order2) - 1)
+    v3 = @. dof3 * ((1:n_order3) - 1)
+
+    el_mat = Array{Array{Float64, 2}}(undef, nT)
+    Threads.@threads for i = 1:elements_N
+        k = Threads.threadid()
+        el_mat[k] = zeros(ls, rs)
+        for j = 1:dof1
+            l1[v1 .+ j, k] = @. dof1 * (el1[1:n_order1, i] - 1) + j
+        end
+        for j = 1:dof2
+            l2[v2 .+ j, k] = @. dof2 * (el2[1:n_order2, i] - 1) + j
+        end
+        for j = 1:dof3
+            l3[v3 .+ j, k] = @. dof3 * (el3[1:n_order3, i] - 1) + j
+        end
+        for ip = 1:ps
+            el_mat[k] += coeff[l3[ip, k]] * el_ten[:, :, ip]
+        end
+        
+        MM[k][l1[:,k], l2[:,k]] +=  el_mat[k]
+    end
+    M = MM[1]
+    for i=2:nT
+        M += MM[i]
+    end
+    M
+end
+
+"""
     assemble_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
                                   elements::Array{Int64, 2},
                                   el_labels::Array{Int64, 1};
@@ -160,7 +265,7 @@ end
 """
     assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
                                     elements::Array{Int64, 2},
-                                    el_labels::Array{Int64, 1};
+                                    elements1d::Array{Int64, 1};
                                     order1 = 1, 
                                     order2 = 1,
                                     dof1 = 1, 
@@ -171,7 +276,7 @@ Assemble a finite elements matrix corresponding to a 2 dimensional square mesh.
 # Arguments
   * `el_mat`   : elementary finite elements matrix
   * `elements` : list of elements
-  * `elements1s`: list of 1d elements
+  * `elements1d`: list of 1d elements
   * `order1`   : order for lhs
   * `order2`   : order for rhs
   * `dof1`     : number of degrees of freedom for each node for lhs

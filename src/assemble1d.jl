@@ -113,17 +113,13 @@ function assemble_1d_FE_matrix_multcoeff(elet::Array{Float64, 3},
     l3 = zeros(UInt64, nT)
     r3 = zeros(UInt64, nT)
 
-    elem = Array{Array{SymPy.Sym}(undef, size(elet, 1), size(elet, 2)), nT)
+    elem = Array{Array{Float64, 2}}(undef, nT)
     
 
     Threads.@threads for i = 1:(nbNodes - 1)
         k = Threads.threadid()
 
-        for il = 1:ls
-            for ir = 1:rs
-                elem[k][il, ir] = 0
-            end
-        end
+        elem[k] = zeros(ls, rs)
         
         l1[k] = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
         r1[k] = (i + 1 + i * intNodes1) * dof1
@@ -209,11 +205,10 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
 function assemble_1d_nu_FE_matrix_varcoeff(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
-                                  intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
+                                           intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1,
+                                           xa=symbols("xa"), xb=symbols("xb"))
 
     nT = Threads.nthreads()
-    global xa
-    global xb
     nbNodes = length(nodes)
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
@@ -259,10 +254,9 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
   * `dof2`     : number of degrees of freedom for each node for rhs
 """
 function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
-                                  intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
+                                  intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1, h=symbols("h"))
 
     nT = Threads.nthreads()
-    global h  
     nbNodes = length(nodes)
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
