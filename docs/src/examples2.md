@@ -20,6 +20,8 @@ using LinearAlgebra
 using SparseArrays
 import gmsh
 using WriteVTK
+
+x, h = symbols("x h")
 nothing #hide
 ```
 
@@ -160,6 +162,8 @@ using LinearAlgebra
 using SparseArrays
 import gmsh
 using WriteVTK
+
+x, h = symbols("x h")
 nothing #hide
 ```
 
@@ -287,7 +291,7 @@ outfiles = vtk_save(vtkfile)
 nothing #hide
 ```
 
-### affichage de la solution
+### Affichage de la solution
 
 
 ![](plots/ex4-u.jpeg) 

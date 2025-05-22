@@ -22,6 +22,7 @@ using LinearAlgebra
 using SparseArrays
 import gmsh
 using WriteVTK
+x, h = symbols("x h")
 ```
 
 ### discretization parameters

@@ -20,6 +20,8 @@ using SparseArrays
 using PyPlot
 close("all")
 
+x, h = symbols("x h")
+
 nothing #hide
 ```
 
@@ -160,6 +162,8 @@ using SparseArrays
 
 using PyPlot
 close("all")
+
+x, h = symbols("x h")
 
 nothing # hide
 ```
