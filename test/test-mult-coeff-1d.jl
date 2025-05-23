@@ -1,4 +1,3 @@
-using Revise
 using SymFEL
 using Test
 using SymPy
