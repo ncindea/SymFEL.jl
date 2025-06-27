@@ -4,7 +4,7 @@ authors=["Nicolae Cindea <Nicolae.Cindea@uca.fr>"]
 version = "0.3.0"
 
 [compat]
-SymPy = "2.3.3"
+SymPy = "1.2.0, 2.3.3"
 julia = "1.10, 1.11"
 
 [deps]
