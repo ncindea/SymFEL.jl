@@ -4,7 +4,9 @@ using SymPy
 using LinearAlgebra
 
 println("# Testing assemble multiplicative coeff in 1d")
+h = symbols("h")
 elet = SymFEL.get_etensor(1, 1, 1, 0, 0, 0)
+SymFEL.exports_ten("fun_elet", elet)
 
 nodes = convert(Array{Float64, 1}, range(0, stop=1, length=101))
 dx = nodes[2] - nodes[1]
@@ -14,6 +16,12 @@ for i = 1:size(elet, 3)
     elet_dx[:,:,i] = elet[:,:,i].subs(h, dx)
 end
 
+include("fun_elet.jl")
+t = fun_elet(dx)
+for i = 1:size(elet_dx, 3)
+    
+    @test norm(t[:, :, i] - elet_dx[:, :, i]) < 1e-14
+end
 
 a = cos.(nodes)
 M = SymFEL.assemble_1d_FE_matrix_multcoeff(elet_dx,

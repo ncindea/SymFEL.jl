@@ -173,6 +173,7 @@ xv = range(0, stop=1, length=2*n-1).^4
 dx = 1 / (n - 1)
 
 elem_M = SymFEL.get_em(2, 3, 1, 0, fe1="Lagrange", fe2="Hermite")
+SymFEL.exports_mat("elem_ML10", elem_M)
 elem_M = elem_M.subs(h, dx)
 elem_M = convert(Matrix{Float64}, elem_M)
 ML = SymFEL.assemble_1d_FE_matrix(elem_M, n, intNodes1 = 1, intNodes2 = 0, dof1 = 1, dof2 = 2)

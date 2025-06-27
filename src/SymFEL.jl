@@ -6,6 +6,7 @@ module SymFEL
 
 using SymPy
 
+include("export-to-fun.jl")
 include("lagrange.jl")
 include("hermite.jl")
 include("assemble1d.jl")
