@@ -1,4 +1,4 @@
-# Copyright 2017-2021 Nicolae Cindea
+# Copyright 2017-2025 Nicolae Cindea
 # See accompanying license file.
 
 module SymFEL
