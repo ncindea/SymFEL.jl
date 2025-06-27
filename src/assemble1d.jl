@@ -256,32 +256,35 @@ Assemble a finite elements matrix corresponding to a 1 dimensional non-uniform m
 function assemble_1d_nu_FE_matrix(elem::Matrix{SymPy.Sym}, nodes::Array{Float64, 1};
                                   intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1, h=symbols("h"))
 
-    nT = Threads.nthreads()
     nbNodes = length(nodes)
     nbNodesTotal1 = (nbNodes + (nbNodes - 1) * intNodes1)
     nbNodesTotal2 = (nbNodes + (nbNodes - 1) * intNodes2)
 
-    MM = Array{SparseMatrixCSC{Float64,Int64}}(undef, nT)
-    for i = 1:nT
-        MM[i] = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
-    end
-
-    l1 = zeros(UInt64, nT)
-    r1 = zeros(UInt64, nT)
-    l2 = zeros(UInt64, nT)
-    r2 = zeros(UInt64, nT)
-    Threads.@threads for i = 1:nbNodes - 1
-        k = Threads.threadid()
-        l1[k] = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
-        r1[k] = (i + 1 + i * intNodes1) * dof1
-        l2[k] = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
-        r2[k] = (i + 1 + i * intNodes2) * dof2
-        elem_loc = elem.subs(h, nodes[i + 1] - nodes[i])
-        MM[k][l1[k]:r1[k], l2[k]:r2[k]] += elem_loc
-    end
-    M = MM[1]
-    for i=2:nT
-        M += MM[i]
+    M = spzeros(Float64, nbNodesTotal1 * dof1, nbNodesTotal2 * dof2)
+    elem_loc = lambdify(elem, use_julia_code=true)
+    
+    for i = 1:(nbNodes - 1)
+        l1 = (i - 1 + (i - 1) * intNodes1) * dof1 + 1
+        r1 = (i + 1 + i * intNodes1) * dof1
+        l2 = (i - 1 + (i - 1) * intNodes2) * dof2 + 1
+        r2 = (i + 1 + i * intNodes2) * dof2
+        M[l1:r1, l2:r2] += convert(Matrix{Float64}, elem_loc(nodes[i + 1] - nodes[i]))
     end
     M
 end
+
+
+"""
+   ass1d_FEM is an alias for assemble_1d_FE_matrix
+"""
+as1d_FEM = assemble_1d_FE_matrix
+
+"""
+   ass1d_nuFEM is an alias for assemble_1d_nu_FE_matrix
+"""
+as1d_nuFEM = assemble_1d_nu_FE_matrix
+
+"""
+   ass1d_nuFEM is an alias for assemble_1d_nu_FE_matrix
+"""
+as1d_nuFEM_vc = assemble_1d_nu_FE_matrix_varcoeff
