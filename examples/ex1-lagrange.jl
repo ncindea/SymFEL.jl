@@ -27,6 +27,7 @@ f = (1 + pi^2) * nodes .* sin.(pi * nodes) - 2 * pi * cos.(pi * nodes);
 # elementary matrices
 elem_K = SymFEL.get_lagrange_em(1, 1, 1);
 elem_M = SymFEL.get_lagrange_em(1, 0, 0);
+h = symbols("h")
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 

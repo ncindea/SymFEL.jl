@@ -1,4 +1,4 @@
-# # An equation of second order in two dimmensions
+# # An equation of second order in three dimmensions
 #
 # Let \\(\Omega = (0, 1)^3\\) the unit cube and denote \\( \Gamma = \partial \Omega\\) its boundary.
 # Consider the following problem. Given \\(f \in C(\Omega)\\), find a function \\(u\\) satisfying
@@ -56,6 +56,8 @@ elem_Kxyz = SymFEL.get_cube_em(elem_Kx,
 
 
 dx = norm(nodes_coordinate[:, elements_bound[1,1]] - nodes_coordinate[:, elements_bound[2,1]])
+
+h = symbols("h")
 
 elem_Kxyz_dx = convert(Matrix{Float64}, elem_Kxyz.subs(h, dx))
 elem_Mxyz_dx = convert(Matrix{Float64}, elem_Mxyz.subs(h, dx));

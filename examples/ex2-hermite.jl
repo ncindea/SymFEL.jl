@@ -28,6 +28,8 @@ f = pi^4 * sin.(pi * nodes);
 # elementary matrices
 elem_K = SymFEL.get_hermite_em(3, 2, 2);
 elem_M = SymFEL.get_em(3, 1, 0, 0; fe1="Hermite", fe2="Lagrange")
+
+h = symbols("h")
 elem_K_dx = convert(Matrix{Float64}, elem_K.subs(h, dx));
 elem_M_dx = convert(Matrix{Float64}, elem_M.subs(h, dx));
 

@@ -14,6 +14,48 @@ include("assemble3d.jl")
 
 
 """
+    get_em(deg1=1, deg2=1, der1::Function, der2::Function;
+           fe1="Lagrange", fe2="Lagrange",
+           x=symbols("x"), h=symbols("h"))
+
+Gives 1d elementary matrices for Lagrange and Hermite elements.
+* der1 and der2 are functions having two arguments:
+  - a symbolic expression
+  - a symbolic variable
+
+The elementary matrices are computed for elements of length `h`.
+"""
+function get_em(deg1, deg2, der1::Function, der2::Function;
+                fe1="Lagrange", fe2="Lagrange",
+                x=symbols("x"), h=symbols("h"))
+    if fe1 == "Lagrange"
+        p1 = get_lagrange_basis(deg1)
+    end
+    if fe2 == "Lagrange"
+        p2 = get_lagrange_basis(deg2)
+    end
+    if fe1 == "Hermite"
+        p1 = get_hermite_basis(deg1)
+    end
+    if fe2 == "Hermite"
+        p2 = get_hermite_basis(deg2)
+    end
+    if (fe1 != "Lagrange" && fe1 != "Hermite") || (fe2 != "Lagrange" && fe2 != "Hermite")
+        error("Only Lagrange and Hermite FEM are implemented.")
+    end
+
+    l1 = length(p1)
+    l2 = length(p2)
+    M = Array{SymPy.Sym}(undef, l1, l2)
+    for i = 1:l1
+        for j = 1:l2
+            M[i, j] = simplify(integrate(der1(p1[i], x) * der2(p2[j], x), (x, 0, h)))
+        end
+    end
+    M
+end
+
+"""
     get_em(deg1=1, deg2=1, der1=0, der2=0;
            fe1="Lagrange", fe2="Lagrange",
            x=symbols("x"), h=symbols("h"))
