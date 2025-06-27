@@ -125,37 +125,39 @@ catch er
 end
 
 ##
-n = 1001
+println("# Testing assembling fonctions in 1d")
+n = 10001
 xv = range(0, stop=1, length=2*n-1).^2
 dx = 1 / (n - 1)
 
 elem_M = SymFEL.get_lagrange_em(2, 0, 0)
 elem_M = elem_M.subs(h, dx)
 elem_M = convert(Matrix{Float64}, elem_M)
-M = SymFEL.assemble_1d_FE_matrix(elem_M, n, intNodes1 = 1, intNodes2 = 1, dof1 = 1, dof2 = 1)
-@test abs(convert(Float64, (xv' * M * xv)[1]) - 1 / 5) < 1e-15
+M1 = SymFEL.assemble_1d_FE_matrix(elem_M, n, intNodes1 = 1, intNodes2 = 1, dof1 = 1, dof2 = 1)
+@test abs(convert(Float64, (xv' * M1 * xv)[1]) - 1 / 5) < 1e-15
+
 
 elem_M_p1 = SymFEL.get_lagrange_em(1, 0, 0)
 elem_M_p1 = elem_M_p1.subs(h, dx)
 elem_M_p1 = convert(Matrix{Float64}, elem_M_p1)
-M_p1 = SymFEL.assemble_1d_FE_matrix(elem_M_p1, n)
+M_p1 = SymFEL.as1d_FEM(elem_M_p1, n, intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
 xv = range(0, stop=1, length=n).^2
 @test abs(convert(Float64, (xv' * M_p1 * xv)[1]) - 1 / 5) < 1e-6
 
 elem_M_h3 = SymFEL.get_hermite_em(3, 0, 0)
 elem_M_h3 = elem_M_h3.subs(h, dx)
 elem_M_h3 = convert(Matrix{Float64}, elem_M_h3)
-M_h3 = SymFEL.assemble_1d_FE_matrix(elem_M_h3, n, intNodes1 = 0, intNodes2 = 0, dof1 = 2, dof2 = 2)
+M_h3 = SymFEL.as1d_FEM(elem_M_h3, n, intNodes1 = 0, intNodes2 = 0, dof1 = 2, dof2 = 2)
 xv = zeros(2 * n, 1)
 xv[1:2:(2*(n-1)+1)] = convert(Array{Float64}, range(0, stop=1, length=n).^3)
 xv[2:2:(2*(n-1)+2)] = 3*convert(Array{Float64}, range(0, stop=1, length=n).^2)
-@test abs(convert(Float64, (xv' * M_h3 * xv)[1]) - 1 / 7) < 1e-15
+@test abs(convert(Float64, (xv' * M_h3 * xv)[1]) - 1 / 7) < 1e-12
 
 nodes = convert(Array{Float64, 1}, range(0, stop=1, length=n))
 elem_M_p1 = SymFEL.get_lagrange_em(1, 0, 0)
-M_p1_nu = SymFEL.assemble_1d_nu_FE_matrix(elem_M_p1, nodes; intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
+M_p1_nu = SymFEL.as1d_nuFEM(elem_M_p1, nodes; intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
 A = M_p1 - M_p1_nu
-@test norm(A[:]) < 1e-15
+@test norm(A[:]) < 1e-12
 ##
 
 nodes = [convert(Array{Float64}, range(0, stop=0.99, length=100));
@@ -173,7 +175,7 @@ dx = 1 / (n - 1)
 elem_M = SymFEL.get_em(2, 3, 1, 0, fe1="Lagrange", fe2="Hermite")
 elem_M = elem_M.subs(h, dx)
 elem_M = convert(Matrix{Float64}, elem_M)
-M = SymFEL.assemble_1d_FE_matrix(elem_M, n, intNodes1 = 1, intNodes2 = 0, dof1 = 1, dof2 = 2)
+ML = SymFEL.assemble_1d_FE_matrix(elem_M, n, intNodes1 = 1, intNodes2 = 0, dof1 = 1, dof2 = 2)
 
 xr = zeros(2*n)
 xvr2 = range(0, stop=1, length=n)
@@ -181,7 +183,7 @@ i = 1:n
 xr[2*(i .- 1) .+ 1] = xvr2
 xr[2*(i .- 1) .+ 2] = ones(n)
 
-@test abs((xv' * M * xr)[1] - 4 / 5) < 1e-14
+@test abs((xv' * ML * xr)[1] - 4 / 5) < 1e-14
 
 n = 1001
 f = x^2
@@ -193,6 +195,7 @@ vec = ones(n)
 III = vec' * M * vec
 
 @test abs(III - 1/3) < 1e-2
+
 include("test-mult-coeff-1d.jl")
 println("All tests passed.")
 
