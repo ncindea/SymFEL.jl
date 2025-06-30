@@ -22,8 +22,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
                                      order2 = 1,
                                      dof1 = 1,
                                      dof2 = 1)
-    n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
-    n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
+    n_order1 = (order1+1)^3
+    n_order2 = (order2+1)^3
 
     el1 = copy(elements)
     el2 = copy(elements)
@@ -48,21 +48,21 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
     elements_N = size(elements, 2)
     M = spzeros(Float64, nodes1_N * dof1, nodes2_N * dof2)
     
-    l2 = zeros(Int64, n_order1 * dof1)
-    r2 = zeros(Int64, n_order2 * dof2)
+    l1 = zeros(Int64, n_order1 * dof1)
+    l2 = zeros(Int64, n_order2 * dof2)
 
     v1 = @. dof1 * ((1:n_order1)-1)
     v2 = @. dof2 * ((1:n_order2)-1)
     
     for i = 1:elements_N
         for j = 1:dof1
-            l2[v1  .+ j] = @. dof1 * (el1[1:n_order1, i] - 1) + j
+            l1[v1  .+ j] = @. dof1 * (el1[1:n_order1, i] - 1) + j
         end
         for j = 1:dof2
-            r2[v2  .+ j] = @. dof2 * (el2[1:n_order2, i] - 1) + j
+            l2[v2  .+ j] = @. dof2 * (el2[1:n_order2, i] - 1) + j
         end
         
-        M[l2, r2] += el_mat
+        M[l1, l2] += el_mat
     end
     M
 end
@@ -96,8 +96,8 @@ function assemble_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
                                      dof1 = 1,
                                      dof2 = 1)
     
-    n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
-    n_order2 = (order2+1)*(4 + (order2 - 1) * (order2 + 3))
+    n_order1 = (order1+1)^3
+    n_order2 = (order2+1)^3
     
     el1 = copy(elements)
     el2 = copy(elements)
@@ -170,8 +170,8 @@ function assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
                                        dof1 = 1,
                                        dof2 = 1)
 
-    n_order1 = (order1+1)*(4 + (order1 - 1) * (order1 + 3))
-    n_order2 = 4 + (order1 - 1) * (order1 + 3)
+    n_order1 = (order1+1)^3
+    n_order2 = (order2+1)^2
 
     nodes = sort(unique(elements[1:n_order1,:][:]))
 
