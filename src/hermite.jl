@@ -116,8 +116,8 @@ end
     function get_square_hermite_em((px, py) = (3, 3),
                                    (mx, my) = (0, 0),
                                    (nx, ny) = (0, 0);
-                                   x=symbols("x"), hx=symbols("hx"),
-                                   y=symbols("y"), hy=symbols("hy"))
+                                   x=symbols("x"), hx=symbols("h"),
+                                   y=symbols("y"), hy=symbols("h"))
 
 Get Hermite finite elements elementary matrices for a squared element.
 
@@ -133,8 +133,8 @@ Get Hermite finite elements elementary matrices for a squared element.
 function get_square_hermite_em((px, py) = (3, 3),
                                (mx, my) = (0, 0),
                                (nx, ny) = (0, 0);
-                               x=symbols("x"), hx=symbols("hx"),
-                               y=symbols("y"), hy=symbols("hy"))
+                               x=symbols("x"), hx=symbols("h"),
+                               y=symbols("y"), hy=symbols("h"))
     Mx = get_hermite_em(px, mx, nx, x=x, h=hx)
     My = get_hermite_em(py, my, ny, x=y, h=hy)
 
