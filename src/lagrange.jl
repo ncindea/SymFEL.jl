@@ -106,16 +106,24 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
 end
 
 """
-    get_square_lagrange_em((px, py) = (1, 1), (mx, my) = (0, 0), (nx, ny) = (0, 0);
-                           x = symbols("x"), h = symbols("h"))
-
+    function get_square_lagrange_em((px, py) = (1, 1),
+                                    (mx, my) = (0, 0),
+                                    (nx, ny) = (0, 0);
+                                    x = symbols("x"),
+                                    hx = symbols("h"),
+                                    y = symbols("y"),
+                                    hy = symbols("h"))
+    
 Get Lagrange finite elements elementary matrices for a squared element.
 
 # Arguments
   * `(px, py)` : degree of polynomials in the basis.
   * `(mx, my)` : number of derivatives on the first function wrt x and y
   * `(nx, ny)` : number of derivatives on the second function wrt x and y
-
+  * `x`        : symbolic variable
+  * `hx`       : symbolic variable
+  * `y`        : symbolic variable
+  * `hy`       : symbolic variable
 # Remarks
   The current version works only for px, py in {1, 2}
 """
@@ -145,5 +153,3 @@ function get_square_lagrange_em((px, py) = (1, 1),
     end
     M
 end
-
-

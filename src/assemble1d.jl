@@ -12,8 +12,8 @@ struct Mesh1d
 end
 
 """
-    assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
-      intNodes = 0, dof1 = 1, dof2 = 1)
+    function assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
+                                   intNodes1 = 0, intNodes2 = 0, dof1 = 1, dof2 = 1)
 
 Assemble a finite elements matrix corresponding to a 1 dimensional uniform mesh.
 

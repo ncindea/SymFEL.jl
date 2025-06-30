@@ -113,8 +113,11 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1;
 end
 
 """
-    get_square_hermite_em((px, py) = (3, 3), (mx, my) = (0, 0), (nx, ny) = (0, 0);
-                          x=symbols("x"), h=symbols("h"))
+    function get_square_hermite_em((px, py) = (3, 3),
+                                   (mx, my) = (0, 0),
+                                   (nx, ny) = (0, 0);
+                                   x=symbols("x"), hx=symbols("hx"),
+                                   y=symbols("y"), hy=symbols("hy"))
 
 Get Hermite finite elements elementary matrices for a squared element.
 
@@ -122,7 +125,10 @@ Get Hermite finite elements elementary matrices for a squared element.
   * `(px, py)` : degree of polynomials in the basis.
   * `(mx, my)` : number of derivatives on the first function wrt x and y
   * `(nx, ny)` : number of derivatives on the second function wrt x and y
-
+  * `x`        : symbolic variable
+  * `hx`       : symbolic variable
+  * `y`        : symbolic variable
+  * `hy`       : symbolic variable
 """
 function get_square_hermite_em((px, py) = (3, 3),
                                (mx, my) = (0, 0),
