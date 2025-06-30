@@ -77,7 +77,7 @@ Get Hermite finite elements elementary matrices.
 function get_hermite_em(p = 3, m = 0, n = 0;
                         x=symbols("x"), h=symbols("h"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
-    F = get_hermite_basis(p)
+    F = get_hermite_basis(p, false, x=x, h=h)
     for i = 1:p+1
         for j = 1:p+1
             M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n), (x, 0, h)))
@@ -102,7 +102,7 @@ function get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1;
     xa = SymPy.symbols("xa")
     xb = SymPy.symbols("xb")
     M = Array{SymPy.Sym}(undef, p+1, p+1)
-    F = get_hermite_basis(p, true)
+    F = get_hermite_basis(p, true, x=x, h=h)
     for i = 1:p+1
         for j = 1:p+1
             M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n) * f, (x, xa, xb)))
@@ -127,9 +127,10 @@ Get Hermite finite elements elementary matrices for a squared element.
 function get_square_hermite_em((px, py) = (3, 3),
                                (mx, my) = (0, 0),
                                (nx, ny) = (0, 0);
-                               x=symbols("x"), h=symbols("h"))
-    Mx = get_hermite_em(px, mx, nx)
-    My = get_hermite_em(py, my, ny)
+                               x=symbols("x"), hx=symbols("hx"),
+                               y=symbols("y"), hy=symbols("hy"))
+    Mx = get_hermite_em(px, mx, nx, x=x, h=hx)
+    My = get_hermite_em(py, my, ny, x=y, h=hy)
 
     node_x = [(1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 1, 2, 1, 2)]
     node_y = [(1, 1, 2, 2, 1, 1, 2, 2, 3, 3, 4, 4, 3, 3, 4, 4)]
@@ -171,7 +172,7 @@ function interpolate(fd, t, ti;
         abs(t[1]-ti[1])>1e-12 || abs(t[end] - ti[end]) > 1e-12)
         error("Vectors t and ti should be uniform partitions of [a,b] interval.")
     end
-    F = get_hermite_basis(2*p - 1)
+    F = get_hermite_basis(2*p - 1, false, x=x, h=h)
     DT = t[2] - t[1];
     FDT = []
     for i = 1:2*p

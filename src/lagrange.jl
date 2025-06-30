@@ -68,7 +68,7 @@ Get Lagrange finite elements elementary matrices.
 function get_lagrange_em(p = 1, m = 0, n = 0;
                          x = symbols("x"), h = symbols("h"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
-    F = get_lagrange_basis(p)
+    F = get_lagrange_basis(p, false, x = x, h = h)
     for i = 1:p+1
         for j = 1:p+1
             M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n), (x, 0, h)))
@@ -95,7 +95,7 @@ function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
                                   xa = symbols("xa"), xb = symbols("xb"))
     M = Array{SymPy.Sym}(undef, p+1, p+1)
     ff = subs(f, x, xa + (xb - xa) / h * x)
-    F = get_lagrange_basis(p, true)
+    F = get_lagrange_basis(p, true, x = x, h = h)
     for i = 1:p+1
         for j = 1:p+1
             M[i, j] = simplify(integrate(diff(F[i], x, m) * diff(F[j], x, n) * ff * (xb - xa) / h, (x, 0, h)))
@@ -122,9 +122,12 @@ Get Lagrange finite elements elementary matrices for a squared element.
 function get_square_lagrange_em((px, py) = (1, 1),
                                 (mx, my) = (0, 0),
                                 (nx, ny) = (0, 0);
-                                x = symbols("x"), h = symbols("h"))
-    Mx = get_lagrange_em(px, mx, nx)
-    My = get_lagrange_em(py, my, ny)
+                                x = symbols("x"),
+                                hx = symbols("h"),
+                                y = symbols("y"),
+                                hy = symbols("h"))
+    Mx = get_lagrange_em(px, mx, nx, x = x, h = hx)
+    My = get_lagrange_em(py, my, ny, x = y, h = hy)
 
     node_x = [(1, 2, 2, 1),
               (1, 3, 3, 1, 2, 3, 2, 1, 2)]
