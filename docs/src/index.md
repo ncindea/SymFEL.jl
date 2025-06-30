@@ -6,7 +6,7 @@ For the two-dimensional meshes we employ [Gmsh](https://gmsh.info/). The Gmsh SD
 
 The utilization of the package is illustrated by several examples in 1d, 2d and 3d.
 
-This package contains several functions usefull for the implementation of the finite elements method (FEM). We use the package `SymPy` for the computation of the basis finite element functions for both Lagrange and Hermite finite elements. We also compute the elementary matrices in 1d and for quadragular elements in 2d and 3d. 
+This package contains several functions usefull for the implementation of the finite elements method (FEM). We use the package `SymPy` for the computation of the basis finite element functions for both Lagrange and Hermite finite elements. We also compute the elementary matrices in 1d and for quadrangular elements in 2d and 3d obtained by tensor products from 1d elementary matrices. 
 For the two and three dimensional meshes we employ [Gmsh](https://gmsh.info/). The Gmsh SDK should be installed in your path following the instruction on the Gmsh site.
 
 The utilisation of the package is illustrated by several examples in 1d, 2d and 3d.
@@ -27,7 +27,7 @@ Pages = ["index.md", "examples1.md", "examples2.md", "examples3.md"]
 ## SymFEl.jl
 
 ```@docs
-function get_em(deg1, deg2, der1::Function, der2::Function;
+SymFEL.get_em(deg1, deg2, der1::Function, der2::Function;
                 fe1="Lagrange", fe2="Lagrange",
                 x=symbols("x"), h=symbols("h"))
 ```
@@ -80,7 +80,7 @@ SymFEL.get_lagrange_em(p = 1, m = 0, n = 0;
 ```
 
 ```@docs
-function get_square_lagrange_em((px, py) = (1, 1),
+SymFEL.get_square_lagrange_em((px, py) = (1, 1),
                                 (mx, my) = (0, 0),
                                 (nx, ny) = (0, 0);
                                 x = symbols("x"),
@@ -90,7 +90,7 @@ function get_square_lagrange_em((px, py) = (1, 1),
 ```
 
 ```docs
-function get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
+SymFEL.get_lagrange_em_varcoeff(p = 1, m = 0, n = 0, f = 1;
                                   x = symbols("x"), h = symbols("h"),
                                   xa = symbols("xa"), xb = symbols("xb"))
 ```
@@ -112,7 +112,7 @@ SymFEL.get_hermite_em_varcoeff(p = 3, m = 0, n = 0, f = 1;
 ```
 
 ```@doc
-function get_square_hermite_em((px, py) = (3, 3),
+SymFEL.get_square_hermite_em((px, py) = (3, 3),
                                (mx, my) = (0, 0),
                                (nx, ny) = (0, 0);
                                x=symbols("x"), hx=symbols("hx"),
@@ -136,7 +136,7 @@ SymFEL.assemble_1d_FE_matrix(elem::Array{Float64, 2}, nbNodes::Int64;
 ```
 
 ```@docs
-assemble_1d_FE_matrix_multcoeff(elet::Array{Float64, 3},
+SymFEL.assemble_1d_FE_matrix_multcoeff(elet::Array{Float64, 3},
                                 coeff::Vector{Float64},
                                 nbNodes::Int64;
                                 intNodes1 = 0,
@@ -229,12 +229,9 @@ SymFEL.assemble2d_cubemesh_FE_matrix(el_mat::Array{Float64, 2},
 ## Exports elementary matrices and tensors to pure julia code
 
 ```@docs
-function exports_mat(fun::String, mat::Matrix{Sym}; path::String="./")
-    file_name = string(expanduser(path), fun, ".jl")
+SymFEL.exports_mat(fun::String, mat::Matrix{Sym}; path::String="./")
 ```
 
 ```@docs
-function exports_ten(fun::String, ten::Array{Sym, 3}; path="./")
-    file_name = string(expanduser(path), fun, ".jl")
+SymFEL.exports_ten(fun::String, ten::Array{Sym, 3}; path="./")
 ```
-	
