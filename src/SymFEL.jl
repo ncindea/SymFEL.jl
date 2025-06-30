@@ -321,6 +321,62 @@ function get_square_etensor(Tx::Array{SymPy.Sym, 3},
 end
 
 
+"""
+    get_cube_etensor(Tx::Array{SymPy.Sym, 3},
+                     Ty::Array{SymPy.Sym, 3},
+                     Tz::Array{SymPy.Sym, 3},
+                     nc::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}},
+                     nr::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}},
+                     np::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}})
+
+Get elementary matrices for a squared or a rectangular element.
+
+# Arguments
+  * `Tx` : elementary tensor for the x variable.
+  * `Ty` : elementary tensor for the y variable
+  * `Tz` : elementary tensor for the z variable
+  * `nc` : order of nodes for column
+  * `nr` : order of nodes for row
+  * `np` : order of nodes for depth
+
+"""
+function get_cube_etensor(Tx::Array{SymPy.Sym, 3},
+                          Ty::Array{SymPy.Sym, 3},
+                          Tz::Array{SymPy.Sym, 3},
+                          nc::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}},
+                          nr::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}},
+                          np::Tuple{Array{Int64,1}, Array{Int64,1}, Array{Int64,1}}
+                          )
+    
+    pxp = size(Tx, 3)
+    pxc = size(Tx, 2)
+    pxr = size(Tx, 1)
+
+    pyp = size(Ty, 3)
+    pyc = size(Ty, 2)
+    pyr = size(Ty, 1)
+
+    pzp = size(Tz, 3)
+    pzc = size(Tz, 2)
+    pzr = size(Tz, 1)
+
+    pp = pxp * pyp * pzp
+    pc = pxc * pyc * pzc
+    pr = pxr * pyr * pzr
+    
+    T = Array{SymPy.Sym}(undef, pr, pc, pp)
+
+    for i = 1:pr
+        for j = 1:pc
+            for k = 1:pp
+                T[i, j, k] = Tx[nr[1][i], nc[1][j], np[1][k]] * Ty[nr[2][i], nc[2][j], np[2][k]] * Tz[nr[3][i], nc[3][j], np[3][k]]
+            end
+        end
+    end
+    T
+end
+
+
 
 end # module
 
