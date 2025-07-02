@@ -112,6 +112,121 @@ function get_em(deg1=1, deg2=1, der1=0, der2=0;
 end
 
 """
+    function get_etensor(deg1=1, deg2=1, deg3=1,
+                         der1::Function, der2::Function, der3::Function;
+                         fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                         x=symbols("x"), h=symbols("h"))
+
+Gives 1d elementary tensors for Lagrange and Hermite elements.
+
+* `der1`, `der2`, `der3` are functions having two arguments:
+  - a symbolic expression
+  - a symbolic variable
+
+This is used, in particular, for ∫ a(x) u(x) ϕ(x) dx.
+
+The elementary matrices are computed for elements of length `h`.
+"""
+function get_etensor_der3(deg1=1, deg2=1, deg3=1,
+                     der1::Function=(e, x)->e,
+                     der2::Function=(e, x)->e,
+                     der3::Function=(e, x)->e;
+                     fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                     x=symbols("x"), h=symbols("h"))
+    if fe1 == "Lagrange"
+        p1 = get_lagrange_basis(deg1, false, x=x, h=h)
+    end
+    if fe2 == "Lagrange"
+        p2 = get_lagrange_basis(deg2,false, x=x, h=h)
+    end
+    if fe3 == "Lagrange"
+        p3 = get_lagrange_basis(deg3, false, x=x, h=h)
+    end
+    if fe1 == "Hermite"
+        p1 = get_hermite_basis(deg1, false, x=x, h=h)
+    end
+    if fe2 == "Hermite"
+        p2 = get_hermite_basis(deg2, false, x=x, h=h)
+    end
+    if fe3 == "Hermite"
+        p3 = get_hermite_basis(deg3, false, x=x, h=h)
+    end
+    if (fe1 != "Lagrange" && fe1 != "Hermite") || (fe2 != "Lagrange" && fe2 != "Hermite") || (fe3 != "Lagrange" && fe3 != "Hermite")
+        error("Only Lagrange and Hermite FEM are implemented.")
+    end
+
+    l1 = length(p1)
+    l2 = length(p2)
+    l3 = length(p3)
+    M = Array{SymPy.Sym}(undef, l1, l2, l3)
+    for i = 1:l1
+        for j = 1:l2
+            for k = 1:l3
+                M[i, j, k] = simplify(integrate(der1(p1[i], x) * der2(p2[j], x) * der3(p3[k], x), (x, 0, h)))
+            end
+        end
+    end
+    M
+end
+
+
+"""
+    function get_etensor(deg1=1, deg2=1, deg3=1,
+                         der::Function;
+                         fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                         x=symbols("x"), h=symbols("h"))
+
+Gives 1d elementary tensors for Lagrange and Hermite elements.
+
+* `der is a function having four arguments:
+  - three symbolic expressions
+  - a symbolic variable
+
+This is used, in particular, for ∫ a(x) u(x) ϕ(x) dx.
+
+The elementary matrices are computed for elements of length `h`.
+"""
+function get_etensor_der(deg1=1, deg2=1, deg3=1,
+                     der::Function=(e,f,g,x)->e*f*g;
+                     fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
+                     x=symbols("x"), h=symbols("h"))
+    if fe1 == "Lagrange"
+        p1 = get_lagrange_basis(deg1, false, x=x, h=h)
+    end
+    if fe2 == "Lagrange"
+        p2 = get_lagrange_basis(deg2,false, x=x, h=h)
+    end
+    if fe3 == "Lagrange"
+            p3 = get_lagrange_basis(deg3, false, x=x, h=h)
+    end
+    if fe1 == "Hermite"
+        p1 = get_hermite_basis(deg1, false, x=x, h=h)
+    end
+    if fe2 == "Hermite"
+        p2 = get_hermite_basis(deg2, false, x=x, h=h)
+    end
+    if fe3 == "Hermite"
+        p3 = get_hermite_basis(deg3, false, x=x, h=h)
+    end
+    if (fe1 != "Lagrange" && fe1 != "Hermite") || (fe2 != "Lagrange" && fe2 != "Hermite") || (fe3 != "Lagrange" && fe3 != "Hermite")
+        error("Only Lagrange and Hermite FEM are implemented.")
+    end
+
+    l1 = length(p1)
+    l2 = length(p2)
+    l3 = length(p3)
+    M = Array{SymPy.Sym}(undef, l1, l2, l3)
+    for i = 1:l1
+        for j = 1:l2
+            for k = 1:l3
+                M[i, j, k] = simplify(integrate(der(p1[i], p2[j], p3[k], x), (x, 0, h)))
+            end
+        end
+    end
+    M
+end
+
+"""
     get_etensor(deg1=1, deg2=1, deg=1, der1=0, der2=0, der3=0;
                 fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
                 x=symbols("x"), h=symbols("h"))
@@ -122,7 +237,7 @@ This is used, in particular, for ∫ a(x) u(x) ϕ(x) dx.
 
 The elementary matrices are computed for elements of length `h`.
 """
-function get_etensor(deg1=1, deg2=1, deg3=1, der1=0, der2=0, der3=0;
+function get_etensor(deg1=1, deg2=1, deg3=1, der1::Int64=0, der2::Int64=0, der3::Int64=0;
                      fe1="Lagrange", fe2="Lagrange", fe3="Lagrange",
                      x=symbols("x"), h=symbols("h"))
     if fe1 == "Lagrange"
