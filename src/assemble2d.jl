@@ -260,10 +260,11 @@ function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
                                          order1 = 1,
                                          order2 = 1,
                                          dof1 = 1,
-                                         dof2 = 1)
+                                         dof2 = 1,
+                                         dofs1 = [1],
+                                         dofs2 = [1])
 
-    # to rewrite better when we have time
-    n2_order1 = 4 + (order1 - 1) * (order1 + 3)
+    n2_order1 = (order1 +1)^2
     n_order1 = order1 + 1
     n_order2 = order2 + 1
     nodes = sort(unique(elements[1:n2_order1,:][:]))
@@ -272,19 +273,34 @@ function assemble1d_squaremesh_FE_matrix(el_mat::Array{Float64, 2},
 
     elements1d_N = size(elements1d, 2)
     M = spzeros(Float64, nodes_N * dof1, nodes_N * dof2)
-    l1 = zeros(UInt64, n_order1 * dof1)
-    l2 = zeros(UInt64, n_order2 * dof2)
-    v1 = dof1 * ((1:n_order1).-1)
-    v2 = dof2 * ((1:n_order2).-1)
+    l1 = zeros(UInt64, n_order1 * length(dofs1))
+    l2 = zeros(UInt64, n_order2 * length(dofs2))
+    v1 = length(dofs1) * ((1:n_order1).-1)
+    v2 = length(dofs2) * ((1:n_order2).-1)
     for i = 1:elements1d_N
 
-        for j = 1:dof1
+        for j in dofs1
             l1[v1 .+ j] = @. dof1 * (elements1d[1:n_order1, i] - 1) + j
         end
-        for j = 1:dof2
+        for j in dofs2
             l2[v2 .+ j] = @. dof2 * (elements1d[1:n_order2, i] - 1) + j
         end
         M[l1, l2] +=  el_mat
     end
     M
 end
+
+"""
+   `as2d_sm_FEM` is an alias for `assemble_squaremesh_FE_matrix`
+"""
+as2d_sm_FEM = assemble_squaremesh_FE_matrix
+
+"""
+   `as1d_sm_FEM` is an alias for `assemble1d_squaremesh_FE_matrix`
+"""
+as1d_sm_FEM = assemble1d_squaremesh_FE_matrix
+
+"""
+   as2d_sm_FEM_cm is an alias for `assemble_squaremesh_FE_matrix_coeffmult`
+"""
+as2d_sm_FEM_cm = assemble_squaremesh_FE_matrix_coeffmult

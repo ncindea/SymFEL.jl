@@ -209,16 +209,16 @@ end
 
 
 """
-   ass1d_FEM is an alias for assemble_1d_FE_matrix
+   as1d_FEM is an alias for assemble_1d_FE_matrix
 """
 as1d_FEM = assemble_1d_FE_matrix
 
 """
-   ass1d_nuFEM is an alias for assemble_1d_nu_FE_matrix
+   as1d_nuFEM is an alias for assemble_1d_nu_FE_matrix
 """
 as1d_nuFEM = assemble_1d_nu_FE_matrix
 
 """
-   ass1d_nuFEM is an alias for assemble_1d_nu_FE_matrix
+   as1d_nuFEM is an alias for assemble_1d_FE_matrix_multcoeff
 """
-as1d_nuFEM_vc = assemble_1d_nu_FE_matrix_varcoeff
+as1d_FEM_mc = assemble_1d_FE_matrix_multcoeff
