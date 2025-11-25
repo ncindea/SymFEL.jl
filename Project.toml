@@ -1,7 +1,7 @@
 name = "SymFEL"
 uuid = "98344202-5a1c-56b1-83aa-57a11ac3493f"
 authors = ["Nicolae Cindea <Nicolae.Cindea@uca.fr>"]
-version = "0.3.0"
+version = "0.3.1"
 
 [deps]
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
